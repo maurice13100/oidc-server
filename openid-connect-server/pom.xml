@@ -50,6 +50,17 @@
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>org.eclipse.persistence.core</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
 
 	</dependencies>
 	<description>OpenID Connect server libraries for Spring and Spring Security.</description>

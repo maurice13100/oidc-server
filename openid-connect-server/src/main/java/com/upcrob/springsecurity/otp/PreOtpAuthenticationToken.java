@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 /**
  * Wrapper token that contains an embedded token that has already been authenticated.
