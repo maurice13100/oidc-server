@@ -16,18 +16,12 @@
     limitations under the License.
  -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:security="http://www.springframework.org/schema/security"
-	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
-	xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider ref="otpGeneratingAuthenticationProvider" />
@@ -37,9 +31,6 @@
 	<mvc:view-controller path="/otpentry" view-name="otpentry" />
 
 	<security:http auto-config="false" disable-url-rewriting="true" use-expressions="true">
-		<!--<security:form-login login-page="/login"-->
-							 <!--authentication-failure-url="/login?error=failure"-->
-							 <!--authentication-success-handler-ref="authenticationTimeStamper" />-->
 		<security:form-login login-page="/login"
 							 authentication-failure-url="/login?error=failure"
 							 authentication-success-handler-ref="userpassSuccessHandler" />
@@ -78,11 +69,10 @@
 		provider -->
 	<bean id="otpGeneratingAuthenticationProvider"
 				class="com.upcrob.springsecurity.otp.OtpGeneratingAuthenticationProvider">
-		<!--<constructor-arg name="provider"-->
-							   <!--ref="dummyAuthenticationProvider" />-->
+		<constructor-arg name="userInfoService" ref="defaultUserInfoService"/>
 		<constructor-arg name="userDetailsService" ref="jdbcUserDetailsService" />
 		<constructor-arg name="tokenstore" ref="localTokenstore" />
-		<constructor-arg name="sendStrategy" ref="emailSendStrategy" />
+		<constructor-arg name="sendStrategy" ref="smsSendStrategy" />
 	</bean>
 
 	<!-- In-memory tokenstore (not for production) that stores generates tokens
@@ -95,13 +85,5 @@
 	<!-- Method by which OTP tokens should be sent. We'll use email for this 
 		example. The server, port and TLS properties are currently setup for gmail, 
 		but need to be configured differently if a different provider is being used. -->
-	<bean id="emailSendStrategy"
-				class="com.upcrob.springsecurity.otp.EmailSendStrategy">
-		<constructor-arg name="server" value="smtp.gmail.com" />
-		<constructor-arg name="port" value="587" />
-		<constructor-arg name="fromAddr" value="test" />
-		<property name="useTls" value="true" />
-		<property name="username" value="test" />
-		<property name="password" value="test" />
-	</bean>
+	<bean id="smsSendStrategy" class="com.upcrob.springsecurity.otp.SmsSendStrategy" />
 </beans>

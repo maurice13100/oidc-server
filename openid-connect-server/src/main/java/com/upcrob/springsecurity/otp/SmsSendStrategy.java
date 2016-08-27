@@ -1,5 +1,15 @@
 package com.upcrob.springsecurity.otp;
 
+import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.TwilioRestException;
+import com.twilio.sdk.resource.factory.MessageFactory;
+import com.twilio.sdk.resource.instance.Message;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +24,29 @@ import java.util.List;
  */
 public class SmsSendStrategy implements SendStrategy {
 	
-	private EmailSendStrategy emailSender;
-	private List<String> carrierDomains;
-	
-	public SmsSendStrategy(EmailSendStrategy emailSender, List<String> carrierDomains) {
-		this.emailSender = emailSender;
-		this.carrierDomains = carrierDomains;
-	}
+	// Find your Account Sid and Token at twilio.com/console
+	public static final String ACCOUNT_SID = "AC1ba5bebe835d0c5fc71b330e5e23d204";
+	public static final String AUTH_TOKEN = "d276bc1c58c19e0940a4d9179b5bc3b8";
+
+	private static final Logger logger = LoggerFactory.getLogger(SmsSendStrategy.class);
 
 	@Override
 	public void send(String token, String phoneNumber) {
-		for (String domain : carrierDomains) {
-			emailSender.send(token, phoneNumber + "@" + domain);
+		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+
+		// Build a filter for the MessageList
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("Body", "Your token connection token is " + token + " . Enter it to login"));
+		params.add(new BasicNameValuePair("To", phoneNumber));
+		params.add(new BasicNameValuePair("From", "+33644608735"));
+
+		MessageFactory messageFactory = client.getAccount().getMessageFactory();
+		Message message = null;
+		try {
+			message = messageFactory.create(params);
+		} catch (TwilioRestException e) {
+			e.printStackTrace();
 		}
+		logger.info(message.getSid());
 	}
 }

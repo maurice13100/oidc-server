@@ -1,5 +1,7 @@
 package com.upcrob.springsecurity.otp;
 
+import org.mitre.openid.connect.model.UserInfo;
+import org.mitre.openid.connect.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,17 +21,20 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 	private OtpGenerator gen;
 	private static final int DEFAULT_OTP_LENGTH = 5;
 	private static final Logger logger = LoggerFactory.getLogger(OtpGeneratingAuthenticationProvider.class);
+	private UserInfoService userInfoService;
 
 	public OtpGeneratingAuthenticationProvider(
-		UserDetailsService userDetailsService,
-		Tokenstore tokenstore,
-		SendStrategy sendStrategy) {
+			UserInfoService userInfoService,
+			UserDetailsService userDetailsService,
+			Tokenstore tokenstore,
+			SendStrategy sendStrategy) {
 		if (tokenstore == null) {
 			throw new IllegalArgumentException("Tokenstore must not be null.");
 		}
 		if (sendStrategy == null) {
 			throw new IllegalArgumentException("SendStrategy must not be null.");
 		}
+		this.userInfoService = userInfoService;
 		this.setUserDetailsService(userDetailsService);
 		this.tokenstore = tokenstore;
 		this.sendStrategy = sendStrategy;
@@ -44,7 +49,9 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 			// Generate OTP token
 			String otp = gen.generateToken();
 			tokenstore.putToken(auth.getName(), otp);
+			UserInfo userInfo = userInfoService.getByUsername(auth.getName());
 			logger.warn(otp + " " + auth.getName());
+			sendStrategy.send(otp, userInfo.getPhoneNumber());
 		}
 		return new PreOtpAuthenticationToken(auth);
 	}
