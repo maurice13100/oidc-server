@@ -272,6 +272,23 @@
             "whitelisted-sites": "Whitelisted Sites"
         }
     },
+    "register": {
+        "register_user": "Registration"
+    },
+    "label": {
+        "user": {
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email",
+            "password": "Password",
+            "confirmPass": "Password confirmation",
+            "phone" : "Phone number"
+        },
+        "form": {
+            "submit": "Submit registration",
+            "loginLink": "Log in instead"
+        }
+    },
     "rsreg": {
         "resource-id-placeholder": "Enter Resource ID",
         "configuration-url": "Client Configuration URL",
