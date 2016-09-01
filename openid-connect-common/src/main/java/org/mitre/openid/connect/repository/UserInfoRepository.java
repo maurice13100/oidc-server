@@ -42,4 +42,5 @@ public interface UserInfoRepository {
 	 */
 	public UserInfo getByEmailAddress(String email);
 
+	public UserInfo registerNewUser(UserInfo newUser);
 }

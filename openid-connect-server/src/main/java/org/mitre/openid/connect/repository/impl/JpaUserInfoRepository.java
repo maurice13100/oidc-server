@@ -62,4 +62,23 @@ public class JpaUserInfoRepository implements UserInfoRepository {
 		return getSingleResult(query.getResultList());
 	}
 
+	/**
+	 * Register a new user
+	 * @param newUser user information to register
+	 * @return UserId
+	 */
+	@Override
+	public UserInfo registerNewUser(UserInfo newUser) {
+		UserInfo userInfo = manager.find(UserInfo.class, newUser);
+		if (userInfo != null) {
+			return null;
+		}
+
+		manager.getTransaction().begin();
+		manager.persist(newUser);
+		manager.getTransaction().commit();
+		manager.flush();
+
+		return newUser;
+	}
 }

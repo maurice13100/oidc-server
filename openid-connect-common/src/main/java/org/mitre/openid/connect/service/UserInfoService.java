@@ -52,4 +52,10 @@ public interface UserInfoService {
 	 */
 	public UserInfo getByEmailAddress(String email);
 
+	/**
+	 * Register a new user
+	 * @param newUser the new user
+	 * @return the created user
+	 */
+	public UserInfo registerNewUser(UserInfo newUser);
 }
