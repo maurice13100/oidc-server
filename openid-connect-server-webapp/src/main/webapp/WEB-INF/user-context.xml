@@ -79,7 +79,7 @@
 		and treats them as valid for 60 seconds following creation -->
 	<bean id="localTokenstore"
 				class="com.upcrob.springsecurity.otp.LocalTokenstore">
-		<constructor-arg name="maxLifetime" value="60" />
+		<constructor-arg name="maxLifetime" value="300" />
 	</bean>
 
 	<!-- Method by which OTP tokens should be sent. We'll use email for this 
