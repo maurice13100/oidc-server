@@ -277,8 +277,7 @@
     },
     "label": {
         "user": {
-            "firstName": "First name",
-            "lastName": "Last name",
+            "userName": "User name",
             "email": "Email",
             "password": "Password",
             "confirmPass": "Password confirmation",
@@ -425,6 +424,7 @@
 		"contact": "Contact",
 		"statistics": "Statistics",
 		"home": "Home",
+        "registration": "Registration",
 		"login": "Log in",
 		"logout": "Log out"
 	},

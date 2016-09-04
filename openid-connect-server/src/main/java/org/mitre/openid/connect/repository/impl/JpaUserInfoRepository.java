@@ -16,14 +16,15 @@
  *******************************************************************************/
 package org.mitre.openid.connect.repository.impl;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.repository.UserInfoRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import static org.mitre.util.jpa.JpaUtil.getSingleResult;
 
@@ -68,15 +69,9 @@ public class JpaUserInfoRepository implements UserInfoRepository {
 	 * @return UserId
 	 */
 	@Override
+	@Transactional(value = "defaultTransactionManager")
 	public UserInfo registerNewUser(UserInfo newUser) {
-		UserInfo userInfo = manager.find(UserInfo.class, newUser);
-		if (userInfo != null) {
-			return null;
-		}
-
-		manager.getTransaction().begin();
-		manager.persist(newUser);
-		manager.getTransaction().commit();
+		manager.merge(newUser);
 		manager.flush();
 
 		return newUser;

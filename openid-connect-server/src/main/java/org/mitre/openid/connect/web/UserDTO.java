@@ -8,11 +8,7 @@ import org.mitre.openid.connect.model.PasswordMatches;
 public class UserDTO {
 	@NotNull
 	@NotEmpty
-	private String firstName;
-
-	@NotNull
-	@NotEmpty
-	private String lastName;
+	private String userName;
 
 	@NotNull
 	@NotEmpty
@@ -29,20 +25,12 @@ public class UserDTO {
 	public UserDTO() {
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getPassword() {
@@ -84,8 +72,7 @@ public class UserDTO {
 
 		UserDTO userDto = (UserDTO) o;
 
-		if (firstName != null ? !firstName.equals(userDto.firstName) : userDto.firstName != null) return false;
-		if (lastName != null ? !lastName.equals(userDto.lastName) : userDto.lastName != null) return false;
+		if (userName != null ? !userName.equals(userDto.userName) : userDto.userName != null) return false;
 		if (password != null ? !password.equals(userDto.password) : userDto.password != null) return false;
 		if (matchingPassword != null ? !matchingPassword.equals(userDto.matchingPassword) : userDto.matchingPassword != null)
 			return false;
@@ -96,8 +83,7 @@ public class UserDTO {
 
 	@Override
 	public int hashCode() {
-		int result = firstName != null ? firstName.hashCode() : 0;
-		result = 131 * result + (lastName != null ? lastName.hashCode() : 0);
+		int result = userName != null ? userName.hashCode() : 0;
 		result = 131 * result + (password != null ? password.hashCode() : 0);
 		result = 131 * result + (matchingPassword != null ? matchingPassword.hashCode() : 0);
 		result = 131 * result + (email != null ? email.hashCode() : 0);

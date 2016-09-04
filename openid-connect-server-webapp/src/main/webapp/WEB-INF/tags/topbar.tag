@@ -53,6 +53,14 @@
 							</c:otherwise>
 						</c:choose>
 						<c:choose>
+							<c:when test="${pageName == 'Registration'}">
+								<li class="active" data-toggle="collapse" data-target=".nav-collapse"><a href=""><spring:message code="topbar.registration"/></a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="registration" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.registration"/></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:choose>
 							<c:when test="${pageName == 'About'}">
 								<li class="active" data-toggle="collapse" data-target=".nav-collapse"><a href=""><spring:message code="topbar.about"/></a></li>
 							</c:when>
