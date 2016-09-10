@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LocalTokenstore implements Tokenstore {
 
-	private Map<String, Token> tokens;
+	private final Map<String, Token> tokens;
 	private int maxLifetime;
 	private ReaperThread reaper;
 	
@@ -21,7 +21,7 @@ public class LocalTokenstore implements Tokenstore {
 			throw new IllegalArgumentException("Maximum token lifetime must be greater than 0.");
 		}
 		
-		this.tokens = new ConcurrentHashMap<String, Token>();
+		this.tokens = new ConcurrentHashMap<>();
 		this.maxLifetime = maxLifetime * 1000;
 		reaper = new ReaperThread(this);
 		reaper.start();

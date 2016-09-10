@@ -42,8 +42,7 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 	}
 
 	@Override
-	public Authentication authenticate(Authentication authentication)
-		throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Authentication auth = super.authenticate(authentication);
 		if (auth.isAuthenticated()) {
 			// Generate OTP token

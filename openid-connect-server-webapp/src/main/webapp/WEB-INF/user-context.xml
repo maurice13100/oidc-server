@@ -35,6 +35,7 @@
 							 authentication-failure-url="/login?error=failure"
 							 authentication-success-handler-ref="userpassSuccessHandler" />
 		<security:intercept-url pattern="/authorize" access="hasRole('ROLE_USER')" />
+		<!--<security:intercept-url pattern="/otpentry" access="hasRole('PRE_AUTH_USER')" />-->
 		<security:intercept-url pattern="/**" access="permitAll" />
 		<security:custom-filter ref="authRequestFilter" after="SECURITY_CONTEXT_FILTER" />
 		<security:custom-filter ref="otpValidationFilter" before="LAST" />
@@ -47,14 +48,12 @@
 		<security:csrf />
 	</security:http>
 
-	<bean id="userpassSuccessHandler"
-				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+	<bean id="userpassSuccessHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
 		<constructor-arg value="/otpentry" />
 	</bean>
 
 	<!-- Validation filter definition -->
-	<bean id="otpValidationFilter"
-				class="com.upcrob.springsecurity.otp.OtpValidationFilter">
+	<bean id="otpValidationFilter" class="com.upcrob.springsecurity.otp.OtpValidationFilter">
 		<constructor-arg name="tokenstore" ref="localTokenstore" />
 		<constructor-arg name="endpoint" value="/validate" />
 		<constructor-arg name="successUrl" value="home" />
@@ -65,10 +64,8 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<!-- OTP wrapper authentication provider - wraps the primary authentication 
-		provider -->
-	<bean id="otpGeneratingAuthenticationProvider"
-				class="com.upcrob.springsecurity.otp.OtpGeneratingAuthenticationProvider">
+	<!-- OTP wrapper authentication provider - wraps the primary authentication provider -->
+	<bean id="otpGeneratingAuthenticationProvider" class="com.upcrob.springsecurity.otp.OtpGeneratingAuthenticationProvider">
 		<constructor-arg name="userInfoService" ref="defaultUserInfoService"/>
 		<constructor-arg name="userDetailsService" ref="jdbcUserDetailsService" />
 		<constructor-arg name="tokenstore" ref="localTokenstore" />
@@ -77,8 +74,7 @@
 
 	<!-- In-memory tokenstore (not for production) that stores generates tokens
 		and treats them as valid for 60 seconds following creation -->
-	<bean id="localTokenstore"
-				class="com.upcrob.springsecurity.otp.LocalTokenstore">
+	<bean id="localTokenstore" class="com.upcrob.springsecurity.otp.LocalTokenstore">
 		<constructor-arg name="maxLifetime" value="300" />
 	</bean>
 

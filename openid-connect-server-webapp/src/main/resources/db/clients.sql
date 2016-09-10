@@ -22,6 +22,7 @@ INSERT INTO client_scope_TEMP (owner_id, scope) VALUES
 	('client', 'offline_access');
 
 INSERT INTO client_redirect_uri_TEMP (owner_id, redirect_uri) VALUES
+	('client', 'https://www.getpostman.com/oauth2/callback'),
 	('client', 'http://localhost/'),
 	('client', 'http://localhost:8080/');
 	

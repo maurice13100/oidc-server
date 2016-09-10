@@ -1,24 +1,29 @@
 package com.upcrob.springsecurity.otp;
 
-import java.io.IOException;
+import org.mitre.openid.connect.filter.AuthorizationRequestFilter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Date;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
+import static org.mitre.openid.connect.web.AuthenticationTimeStamper.AUTH_TIMESTAMP;
 
 /**
  * This class validates that an OTP token entered by a user is valid.  If it is,
- * the user will be redirected to the success URL.  Otherwise, they will be redirected
+ * the user will be redirected to the success URL or the stored redirect URL.  Otherwise, they will be redirected
  * to the failure URL.
  */
-public class OtpValidationFilter extends GenericFilterBean {
+public class OtpValidationFilter extends OncePerRequestFilter {
 
 	public static final String DEFAULT_OTP_PARAMETER_NAME = "otptoken";
 	public String otpParameterName = DEFAULT_OTP_PARAMETER_NAME;
@@ -26,7 +31,8 @@ public class OtpValidationFilter extends GenericFilterBean {
 	private String endpoint;
 	private String successUrl;
 	private String failureUrl;
-	
+	private RequestCache requestCache = new HttpSessionRequestCache();
+
 	public OtpValidationFilter(Tokenstore tokenstore, String endpoint, String successUrl, String failureUrl) {
 		this.tokenstore = tokenstore;
 		this.endpoint = endpoint;
@@ -35,16 +41,9 @@ public class OtpValidationFilter extends GenericFilterBean {
 	}
 	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
-			throw new IllegalArgumentException("Request and response must be over HTTP.");
-		}
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
-		
+	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 		// Make sure validation endpoint was requested before continuing
-		String path = req.getRequestURI().substring(req.getContextPath().length());
+		String path = request.getRequestURI().substring(request.getContextPath().length());
 		if (!path.equals(endpoint)) {
 			chain.doFilter(request, response);
 			return;
@@ -53,18 +52,18 @@ public class OtpValidationFilter extends GenericFilterBean {
 		// Get token from request
 		String token = request.getParameter(otpParameterName);
 		if (token == null) {
-			resp.sendRedirect(failureUrl);
+			response.sendRedirect(failureUrl);
 			return;
 		}
 		
 		// Get username from security context
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null) {
-			resp.sendRedirect(failureUrl);
+			response.sendRedirect(failureUrl);
 			return;
 		}
 		if (!(auth instanceof PreOtpAuthenticationToken)) {
-			resp.sendRedirect(failureUrl);
+			response.sendRedirect(failureUrl);
 			return;
 		}
 		PreOtpAuthenticationToken authToken = (PreOtpAuthenticationToken) auth;
@@ -73,10 +72,32 @@ public class OtpValidationFilter extends GenericFilterBean {
 		// Validate token
 		if (tokenstore.isTokenValid(username, token)) {
 			SecurityContextHolder.getContext().setAuthentication(authToken.getEmbeddedToken());
-			resp.sendRedirect(successUrl);
+
+			HttpSession session = request.getSession();
+
+			Date authTimestamp = new Date();
+			session.setAttribute(AUTH_TIMESTAMP, authTimestamp);
+
+			if (session.getAttribute(AuthorizationRequestFilter.PROMPT_REQUESTED) != null) {
+				session.setAttribute(AuthorizationRequestFilter.PROMPTED, Boolean.TRUE);
+				session.removeAttribute(AuthorizationRequestFilter.PROMPT_REQUESTED);
+			}
+
+			logger.info("Successful Authentication of " + username + " at " + authTimestamp.toString());
+
+			SavedRequest savedRequest = requestCache.getRequest(request, response);
+			if (savedRequest != null) {
+				String redirectUrl = savedRequest.getRedirectUrl();
+				response.sendRedirect(redirectUrl);
+				logger.info("Redirect to : " + redirectUrl);
+			} else {
+				response.sendRedirect(successUrl);
+				logger.info("Redirect to : " + successUrl);
+			}
+
 		} else {
 			SecurityContextHolder.getContext().setAuthentication(null);
-			resp.sendRedirect(failureUrl);
+			response.sendRedirect(failureUrl);
 		}
 	}
 }
