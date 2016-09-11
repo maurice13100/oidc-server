@@ -1,8 +1,9 @@
 package org.mitre.openid.connect.web;
 
-import com.sun.istack.internal.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.mitre.openid.connect.model.PasswordMatches;
+
+import javax.validation.constraints.NotNull;
 
 @PasswordMatches
 public class UserDTO {
