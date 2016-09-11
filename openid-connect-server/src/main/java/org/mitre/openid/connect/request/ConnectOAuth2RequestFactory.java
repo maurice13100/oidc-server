@@ -104,7 +104,7 @@ public class ConnectOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
 	public AuthorizationRequest createAuthorizationRequest(Map<String, String> inputParams) {
 
 
-		AuthorizationRequest request = new AuthorizationRequest(inputParams, Collections.<String, String> emptyMap(),
+		AuthorizationRequest request = new AuthorizationRequest(inputParams, Collections.emptyMap(),
 				inputParams.get(OAuth2Utils.CLIENT_ID),
 				OAuth2Utils.parseParameterList(inputParams.get(OAuth2Utils.SCOPE)), null,
 				null, false, inputParams.get(OAuth2Utils.STATE),

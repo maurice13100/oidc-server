@@ -105,7 +105,7 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 		}
 
 		try {
-			// we have to create our own auth request in order to get at all the parmeters appropriately
+			// we have to create our own auth request in order to get at all the parameters appropriately
 			AuthorizationRequest authRequest = null;
 
 			ClientDetailsEntity client = null;

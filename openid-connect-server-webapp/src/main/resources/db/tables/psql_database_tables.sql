@@ -168,6 +168,10 @@ CREATE TABLE IF NOT EXISTS client_details (
 	created_at TIMESTAMP,
 	initiate_login_uri VARCHAR(2048),
 	clear_access_tokens_on_refresh BOOLEAN DEFAULT true NOT NULL,
+
+	software_statement VARCHAR(4096),
+
+	code_challenge_method VARCHAR(256),
 	
 	UNIQUE (client_id)
 );
