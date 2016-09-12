@@ -68,9 +68,9 @@
 			src/main/resources/db/tables/psql_database_tables.sql -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/postgres" />
-		<property name="username" value="postgres" />
-		<property name="password" value="" />
+		<property name="jdbcUrl" value="jdbc:postgres://ec2-54-75-228-71.eu-west-1.compute.amazonaws.com:5432/d5jistn446tpch" />
+		<property name="username" value="sxhjosktxkrtpr" />
+		<property name="password" value="FgGLHqbyDxke8_tSeLR9ad5g1L" />
 	</bean>
 
 	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
