@@ -74,7 +74,7 @@
 
 	<!-- In-memory tokenstore (not for production) that stores generates tokens
 		and treats them as valid for 60 seconds following creation -->
-	<bean id="localTokenstore" class="com.upcrob.springsecurity.otp.LocalTokenstore">
+	<bean id="localTokenstore" class="com.upcrob.springsecurity.otp.tokenstore.LocalTokenstore">
 		<constructor-arg name="maxLifetime" value="300" />
 	</bean>
 

@@ -1,6 +1,9 @@
 package com.upcrob.springsecurity.otp;
 
+import com.upcrob.springsecurity.otp.otpgenerator.DefaultOtpGenerator;
+import com.upcrob.springsecurity.otp.otpgenerator.OtpGenerator;
 import com.upcrob.springsecurity.otp.send.SendStrategy;
+import com.upcrob.springsecurity.otp.tokenstore.Tokenstore;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.slf4j.Logger;

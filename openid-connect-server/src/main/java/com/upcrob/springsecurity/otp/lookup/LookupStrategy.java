@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.lookup;
 
 /**
  * Strategy for looking up user contact information (email, phone number, etc) by username.

@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.tokenstore;
 
 import java.util.Map;
 import java.util.Map.Entry;

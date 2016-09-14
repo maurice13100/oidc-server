@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.otpgenerator;
 
 import java.security.SecureRandom;
 import java.util.Random;

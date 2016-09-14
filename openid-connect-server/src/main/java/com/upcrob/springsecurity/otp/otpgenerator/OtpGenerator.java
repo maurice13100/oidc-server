@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.otpgenerator;
 
 /**
  * Implementations of this interface generate random token strings.

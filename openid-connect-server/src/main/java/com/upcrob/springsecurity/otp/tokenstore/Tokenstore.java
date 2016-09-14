@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.tokenstore;
 
 /**
  * Implementations of this interface store tokens and invalidate them after

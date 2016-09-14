@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.lookup;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
