@@ -81,5 +81,5 @@
 	<!-- Method by which OTP tokens should be sent. We'll use email for this 
 		example. The server, port and TLS properties are currently setup for gmail, 
 		but need to be configured differently if a different provider is being used. -->
-	<bean id="smsSendStrategy" class="com.upcrob.springsecurity.otp.SmsSendStrategy" />
+	<bean id="smsSendStrategy" class="com.upcrob.springsecurity.otp.send.SmsSendStrategy" />
 </beans>

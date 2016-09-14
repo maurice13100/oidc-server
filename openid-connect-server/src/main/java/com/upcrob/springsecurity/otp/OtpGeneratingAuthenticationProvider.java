@@ -1,5 +1,6 @@
 package com.upcrob.springsecurity.otp;
 
+import com.upcrob.springsecurity.otp.send.SendStrategy;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.slf4j.Logger;

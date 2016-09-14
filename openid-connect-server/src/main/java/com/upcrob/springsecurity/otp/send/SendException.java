@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.send;
 
 /**
  * Describes an Exception that occurs while attempting to send a token.

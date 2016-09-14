@@ -1,4 +1,4 @@
-package com.upcrob.springsecurity.otp;
+package com.upcrob.springsecurity.otp.send;
 
 /**
  * Strategy that can be used to send a token to a user.
