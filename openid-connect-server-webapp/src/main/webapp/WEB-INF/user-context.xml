@@ -30,16 +30,15 @@
 	<mvc:view-controller path="/login" view-name="login" />
 	<mvc:view-controller path="/otpentry" view-name="otpentry" />
 
-	<security:http auto-config="false" disable-url-rewriting="true" use-expressions="true">
-		<security:form-login login-page="/login"
-							 authentication-failure-url="/login?error=failure"
+	<security:http auto-config="false" disable-url-rewriting="true" use-expressions="true" entry-point-ref="pathLoginAuthenticationEntryPoint">
+		<security:form-login authentication-failure-handler-ref="pathUrlAuthenticationFailureHandler"
 							 authentication-success-handler-ref="userpassSuccessHandler" />
 		<security:intercept-url pattern="/authorize" access="hasRole('ROLE_USER')" />
 		<!--<security:intercept-url pattern="/otpentry" access="hasRole('PRE_AUTH_USER')" />-->
 		<security:intercept-url pattern="/**" access="permitAll" />
 		<security:custom-filter ref="authRequestFilter" after="SECURITY_CONTEXT_FILTER" />
 		<security:custom-filter ref="otpValidationFilter" before="LAST" />
-		<security:logout logout-url="/logout" />
+		<security:logout success-handler-ref="pathUrlLogoutSuccessHandler" />
 		<security:anonymous />
 		<security:expression-handler ref="oauthWebExpressionHandler" />
 		<security:headers>
@@ -47,6 +46,14 @@
 		</security:headers>
 		<security:csrf />
 	</security:http>
+
+	<bean id="pathUrlAuthenticationFailureHandler" class="org.mitre.openid.connect.config.PathUrlAuthenticationFailureHandler" />
+
+	<bean id="pathLoginAuthenticationEntryPoint" class="org.mitre.openid.connect.config.PathLoginAuthenticationEntryPoint">
+		<constructor-arg value="/login" />
+	</bean>
+
+	<bean id="pathUrlLogoutSuccessHandler" class="org.mitre.openid.connect.config.PathUrlLogoutSuccessHandler" />
 
 	<bean id="userpassSuccessHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
 		<constructor-arg value="/otpentry" />
