@@ -25,6 +25,7 @@
 
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider ref="otpGeneratingAuthenticationProvider" />
+		<security:authentication-provider ref="phoneNumberAuthenticationProvider" />
 	</security:authentication-manager>
 		
 	<mvc:view-controller path="/login" view-name="login" />
@@ -32,14 +33,15 @@
 	<mvc:view-controller path="/otpentry" view-name="otpentry" />
 
 	<security:http auto-config="false" disable-url-rewriting="true" use-expressions="true" entry-point-ref="pathLoginAuthenticationEntryPoint">
-		<security:form-login authentication-failure-handler-ref="pathUrlAuthenticationFailureHandler"
-							 authentication-success-handler-ref="userpassSuccessHandler" />
+		<security:custom-filter ref="smsUsernamePasswordFormLoginFilter" before="FORM_LOGIN_FILTER" />
+		<security:custom-filter ref="usernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER" />
 		<security:intercept-url pattern="/authorize" access="hasRole('ROLE_USER')" />
 		<!--<security:intercept-url pattern="/otpentry" access="hasRole('PRE_AUTH_USER')" />-->
 		<security:intercept-url pattern="/**" access="permitAll" />
 		<security:custom-filter ref="authRequestFilter" after="SECURITY_CONTEXT_FILTER" />
 		<security:custom-filter ref="otpValidationFilter" before="LAST" />
-		<security:logout success-handler-ref="pathUrlLogoutSuccessHandler" />
+		<security:logout logout-url="/logout" />
+		<!--<security:logout success-handler-ref="pathUrlLogoutSuccessHandler" />-->
 		<security:anonymous />
 		<security:expression-handler ref="oauthWebExpressionHandler" />
 		<security:headers>
@@ -47,6 +49,18 @@
 		</security:headers>
 		<security:csrf />
 	</security:http>
+
+	<bean id="smsUsernamePasswordFormLoginFilter" class="org.mitre.openid.connect.filter.SmsUsernamePasswordAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationSuccessHandler" ref="userpassSuccessHandler" />
+		<property name="authenticationFailureHandler" ref="pathUrlAuthenticationFailureHandler" />
+	</bean>
+
+	<bean id="usernamePasswordAuthenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationSuccessHandler" ref="userpassSuccessHandler" />
+		<property name="authenticationFailureHandler" ref="pathUrlAuthenticationFailureHandler" />
+	</bean>
 
 	<bean id="pathUrlAuthenticationFailureHandler" class="org.mitre.openid.connect.config.PathUrlAuthenticationFailureHandler" />
 
@@ -76,6 +90,14 @@
 	<bean id="otpGeneratingAuthenticationProvider" class="com.upcrob.springsecurity.otp.OtpGeneratingAuthenticationProvider">
 		<constructor-arg name="userInfoService" ref="defaultUserInfoService"/>
 		<constructor-arg name="userDetailsService" ref="jdbcUserDetailsService" />
+		<constructor-arg name="tokenstore" ref="localTokenstore" />
+		<constructor-arg name="sendStrategy" ref="smsSendStrategy" />
+	</bean>
+
+	<!-- OTP wrapper authentication provider - wraps the primary authentication provider -->
+	<bean id="phoneNumberAuthenticationProvider" class="com.upcrob.springsecurity.otp.PhoneNumberAuthenticationProvider">
+		<constructor-arg name="userInfoService" ref="defaultUserInfoService"/>
+		<constructor-arg name="userDetailsService" ref="jdbcUserDetailsService"/>
 		<constructor-arg name="tokenstore" ref="localTokenstore" />
 		<constructor-arg name="sendStrategy" ref="smsSendStrategy" />
 	</bean>
