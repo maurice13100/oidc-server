@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("authenticationTimeStamper")
 public class AuthenticationTimeStamper extends SavedRequestAwareAuthenticationSuccessHandler {
-
+//TODO TO BE DELETED
 	/**
 	 * Logger for this class
 	 */

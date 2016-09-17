@@ -16,9 +16,6 @@
  *******************************************************************************/
 package org.mitre.openid.connect.service.impl;
 
-import static org.mitre.openid.connect.request.ConnectRequestParameters.MAX_AGE;
-import static org.mitre.openid.connect.request.ConnectRequestParameters.NONCE;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.stereotype.Service;
@@ -61,6 +59,14 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.PlainJWT;
 import com.nimbusds.jwt.SignedJWT;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
+
+import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
+
 /**
  * Default implementation of service to create specialty OpenID Connect tokens.
  * 
@@ -139,6 +145,22 @@ public class DefaultOIDCTokenService implements OIDCTokenService {
 		String nonce = (String)request.getExtensions().get(NONCE);
 		if (!Strings.isNullOrEmpty(nonce)) {
 			idClaims.claim("nonce", nonce);
+		}
+
+		//TODO deal with essential parameter
+		//TODO retrieve acr values from session ... not from the request
+//		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+//		ServletRequestAttributes attr = (ServletRequestAttributes)
+//			RequestContextHolder.currentRequestAttributes();
+//		HttpSession session= attr.getRequest().getSession(true);
+		String acrValues = (String) request.getExtensions().get(ACR_VALUES);
+		if (!Strings.isNullOrEmpty(acrValues)) {
+			idClaims.claim(ACR_VALUES, acrValues);
+		}
+
+		String amrValue = (String) request.getExtensions().get(AMR);
+		if (!Strings.isNullOrEmpty(amrValue)) {
+			idClaims.claim(AMR, amrValue);
 		}
 
 		Set<String> responseTypes = request.getResponseTypes();

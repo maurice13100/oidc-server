@@ -30,6 +30,9 @@ public interface ConnectRequestParameters {
 	public String SCOPE = "scope";
 	public String NONCE = "nonce";
 	public String PROMPT = "prompt";
+	public String ACR_VALUES = "acr_values";
+	public String ACR = "acr";
+	public String AMR = "amr";
 
 	// prompt values
 	public String PROMPT_LOGIN = "login";

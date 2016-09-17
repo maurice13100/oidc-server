@@ -102,8 +102,6 @@ public class ConnectOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
 
 	@Override
 	public AuthorizationRequest createAuthorizationRequest(Map<String, String> inputParams) {
-
-
 		AuthorizationRequest request = new AuthorizationRequest(inputParams, Collections.emptyMap(),
 				inputParams.get(OAuth2Utils.CLIENT_ID),
 				OAuth2Utils.parseParameterList(inputParams.get(OAuth2Utils.SCOPE)), null,
@@ -153,6 +151,10 @@ public class ConnectOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
 		if (inputParams.containsKey(REQUEST)) {
 			request.getExtensions().put(REQUEST, inputParams.get(REQUEST));
 			processRequestObject(inputParams.get(REQUEST), request);
+		}
+
+		if (inputParams.containsKey(ACR_VALUES)) {
+			request.getExtensions().put(ACR_VALUES, inputParams.get(ACR_VALUES));
 		}
 
 		if (request.getClientId() != null) {

@@ -124,6 +124,10 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 				session.removeAttribute(LOGIN_HINT);
 			}
 
+			if (authRequest.getExtensions().get(ACR_VALUES) != null) {
+				session.setAttribute(ACR_VALUES, authRequest.getExtensions().get(ACR_VALUES));
+			}
+
 			if (authRequest.getExtensions().get(PROMPT) != null) {
 				// we have a "prompt" parameter
 				String prompt = (String)authRequest.getExtensions().get(PROMPT);
