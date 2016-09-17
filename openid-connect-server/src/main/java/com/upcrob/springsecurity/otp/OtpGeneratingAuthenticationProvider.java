@@ -8,6 +8,8 @@ import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,7 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * with a PreOtpAuthenticationToken.  This indicates that the first phase of authentication
  * has been completed, but OTP verification has yet to take place.
  */
-public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvider {
+public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvider implements EnvironmentAware {
 
 	private Tokenstore tokenstore;
 	private SendStrategy sendStrategy;
@@ -26,6 +28,7 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 	private static final int DEFAULT_OTP_LENGTH = 5;
 	private static final Logger logger = LoggerFactory.getLogger(OtpGeneratingAuthenticationProvider.class);
 	private UserInfoService userInfoService;
+	private Environment environment;
 
 	public OtpGeneratingAuthenticationProvider(
 			UserInfoService userInfoService,
@@ -54,7 +57,11 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 			tokenstore.putToken(auth.getName(), otp);
 			UserInfo userInfo = userInfoService.getByUsername(auth.getName());
 			logger.warn(otp + " " + auth.getName());
-			sendStrategy.send(otp, userInfo.getPhoneNumber());
+			for (String profile : environment.getActiveProfiles()) {
+				if (!profile.equals("dev")) {
+					sendStrategy.send(otp, userInfo.getPhoneNumber());
+				}
+			}
 		}
 		return new PreOtpAuthenticationToken(auth);
 	}
@@ -64,5 +71,10 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 			throw new IllegalArgumentException("OTP generator instance cannot be null.");
 		}
 		gen = generator;
+	}
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
 	}
 }

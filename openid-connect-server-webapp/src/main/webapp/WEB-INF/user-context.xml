@@ -28,6 +28,7 @@
 	</security:authentication-manager>
 		
 	<mvc:view-controller path="/login" view-name="login" />
+	<mvc:view-controller path="/login_sms" view-name="login_sms" />
 	<mvc:view-controller path="/otpentry" view-name="otpentry" />
 
 	<security:http auto-config="false" disable-url-rewriting="true" use-expressions="true" entry-point-ref="pathLoginAuthenticationEntryPoint">
