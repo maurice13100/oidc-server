@@ -42,5 +42,14 @@ public interface UserInfoRepository {
 	 */
 	public UserInfo getByEmailAddress(String email);
 
+	/**
+	 *
+	 * Get the UserInfo object by its phone number field
+	 *
+	 * @param phoneNumber
+	 * @return
+	 */
+	public UserInfo getByPhoneNumber(String phoneNumber);
+
 	public UserInfo registerNewUser(UserInfo newUser);
 }

@@ -53,6 +53,14 @@ public interface UserInfoService {
 	public UserInfo getByEmailAddress(String email);
 
 	/**
+	 * Get the user registered at this server with the given phone number.
+	 *
+	 * @param phoneNumber
+	 * @return
+	 */
+	public UserInfo getByPhoneNumber(String phoneNumber);
+
+	/**
 	 * Register a new user
 	 * @param newUser the new user
 	 * @return the created user

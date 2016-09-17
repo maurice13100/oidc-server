@@ -75,6 +75,11 @@ public class DefaultUserInfoService implements UserInfoService {
 	}
 
 	@Override
+	public UserInfo getByPhoneNumber(String phoneNumber) {
+		return userInfoRepository.getByPhoneNumber(phoneNumber);
+	}
+
+	@Override
 	public UserInfo registerNewUser(UserInfo newUser) {
 		return userInfoRepository.registerNewUser(newUser);
 	}
