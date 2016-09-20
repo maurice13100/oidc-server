@@ -57,9 +57,13 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 			tokenstore.putToken(auth.getName(), otp);
 			UserInfo userInfo = userInfoService.getByUsername(auth.getName());
 			logger.warn(otp + " " + auth.getName());
-			for (String profile : environment.getActiveProfiles()) {
-				if (!profile.equals("dev")) {
-					sendStrategy.send(otp, userInfo.getPhoneNumber());
+			if (environment.getActiveProfiles() == null || environment.getActiveProfiles().length == 0) {
+				sendStrategy.send(otp, userInfo.getPhoneNumber());
+			} else {
+				for (String profile : environment.getActiveProfiles()) {
+					if (!profile.equals("dev")) {
+						sendStrategy.send(otp, userInfo.getPhoneNumber());
+					}
 				}
 			}
 		}
