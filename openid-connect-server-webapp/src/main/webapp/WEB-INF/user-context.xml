@@ -41,7 +41,6 @@
 		<security:custom-filter ref="authRequestFilter" after="SECURITY_CONTEXT_FILTER" />
 		<security:custom-filter ref="otpValidationFilter" before="LAST" />
 		<security:logout logout-url="/logout" />
-		<!--<security:logout success-handler-ref="pathUrlLogoutSuccessHandler" />-->
 		<security:anonymous />
 		<security:expression-handler ref="oauthWebExpressionHandler" />
 		<security:headers>

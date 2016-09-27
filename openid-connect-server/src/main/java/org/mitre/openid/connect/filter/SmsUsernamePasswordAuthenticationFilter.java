@@ -1,6 +1,8 @@
 package org.mitre.openid.connect.filter;
 
 import org.mitre.openid.connect.model.PhoneNumberAuthenticationToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +21,8 @@ import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
 
 public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+	private static final Logger logger = LoggerFactory.getLogger(SmsUsernamePasswordAuthenticationFilter.class);
+
 	public static final String SPRING_SECURITY_FORM_PHONE_NUMBER_KEY = "j_phone_number";
 	public static final String AMR_SMS = "sms";
 	public static final String AMR_PWD = "pwd";
@@ -34,30 +38,25 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String acr_value = (String) request.getSession().getAttribute(ACR_VALUES);
-		if (acr_value == null) {
+		if (acr_value == null || acr_value.equals(AMR_PWD)) {
+			setValueInSession(request, AMR, AMR_PWD);
+			setValueInSession(request, ACR, AMR_PWD);
 			chain.doFilter(request, response);
-			return;
+		} else if (acr_value.equals(AMR_SMS)) {
+			super.doFilter(req, res, chain);
 		}
-		super.doFilter(req, res, chain);
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException {
+		logger.debug("Attempting authentication");
 		Authentication authentication = null;
 		String acr_value = (String) httpServletRequest.getSession().getAttribute(ACR_VALUES);
 
-		if (acr_value != null ) {
-			if (acr_value.equals(AMR_PWD)) {
-				// Try with username password (it will redirect to UsernamePasswordAuthenticationFilter because authentication == null
-				setValueInSession(httpServletRequest, AMR, AMR_PWD);
-				setValueInSession(httpServletRequest, ACR, AMR_PWD);
-
-			} else if (acr_value.equals(AMR_SMS)) {
-				// Try with sms
-				authentication = this.smsAuthenticationAttempt(httpServletRequest, httpServletResponse);
-				setValueInSession(httpServletRequest, AMR, AMR_SMS);
-				setValueInSession(httpServletRequest, ACR, AMR_SMS);
-			}
+		if (acr_value != null) {
+			authentication = this.smsAuthenticationAttempt(httpServletRequest, httpServletResponse);
+			setValueInSession(httpServletRequest, AMR, AMR_SMS);
+			setValueInSession(httpServletRequest, ACR, AMR_SMS);
 
 		} else {
 			throw new AuthenticationServiceException("acr_values should have been set but they weren't");
@@ -76,7 +75,7 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 	}
 
 	private Authentication smsAuthenticationAttempt(HttpServletRequest request, HttpServletResponse response) {
-		if(!request.getMethod().equals("POST")) {
+		if (!request.getMethod().equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		} else {
 			String phoneNumber = this.obtainPhoneNumber(request);
