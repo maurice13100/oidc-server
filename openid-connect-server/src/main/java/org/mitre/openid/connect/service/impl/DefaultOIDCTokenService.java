@@ -148,7 +148,7 @@ public class DefaultOIDCTokenService implements OIDCTokenService {
 		}
 
 		//TODO deal with essential parameter
-		//TODO retrieve acr values from session ... not from the request
+		//TODO check if extensions are still here, what request is it
 //		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 //		ServletRequestAttributes attr = (ServletRequestAttributes)
 //			RequestContextHolder.currentRequestAttributes();

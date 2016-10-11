@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = OnlineRegistrationEndpoint.URL)
@@ -47,6 +48,7 @@ public class OnlineRegistrationEndpoint {
 		if (!result.hasErrors()) {
 			User user = mapDtoToUser(accountDTO);
 			UserInfo userInfo = mapDtoToUserInfo(accountDTO);
+			userInfo.setSub(UUID.randomUUID().toString().replace("-", ""));
 
 			userService.registerNewUser(user);
 			userInfoService.registerNewUser(userInfo);
