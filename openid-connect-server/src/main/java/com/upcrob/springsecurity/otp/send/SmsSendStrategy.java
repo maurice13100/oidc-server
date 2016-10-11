@@ -35,8 +35,8 @@ public class SmsSendStrategy implements SendStrategy {
 		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
 
 		// Build a filter for the MessageList
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("Body", "Your token connection token is " + token + " . Enter it to login"));
+		List<NameValuePair> params = new ArrayList<>();
+		params.add(new BasicNameValuePair("Body", "Your connection's token is " + token + " . Enter it to login"));
 		params.add(new BasicNameValuePair("To", phoneNumber));
 		params.add(new BasicNameValuePair("From", "+33644608735"));
 
