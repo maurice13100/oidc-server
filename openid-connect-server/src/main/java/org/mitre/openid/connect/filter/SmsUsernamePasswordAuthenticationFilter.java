@@ -38,12 +38,31 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String acr_value = (String) request.getSession().getAttribute(ACR_VALUES);
-		if (acr_value == null || acr_value.equals(AMR_PWD)) {
+		if (acr_value == null) {
 			setValueInSession(request, AMR, AMR_PWD);
 			setValueInSession(request, ACR, AMR_PWD);
 			chain.doFilter(request, response);
-		} else if (acr_value.equals(AMR_SMS)) {
-			super.doFilter(req, res, chain);
+		} else {
+			int valuesNumber = acr_value.split(" ").length;
+			boolean hasSms = false;
+			if (acr_value.contains("pwd")) {
+				setValueInSession(request, AMR, AMR_PWD);
+				setValueInSession(request, ACR, AMR_PWD);
+			}
+
+			if (acr_value.contains("sms")) {
+				setValueInSession(request, AMR, AMR_SMS);
+				setValueInSession(request, ACR, AMR_SMS);
+				hasSms = true;
+			}
+
+			if (valuesNumber > 1) {
+				chain.doFilter(request, response);
+			} else if (valuesNumber == 1 && hasSms){
+				super.doFilter(req, res, chain);
+			} else {
+				chain.doFilter(request, response);
+			}
 		}
 	}
 

@@ -23,7 +23,7 @@ INSERT INTO authorities_TEMP (username, authority) VALUES
 -- By default, the username column here has to match the username column in the users table, above
 INSERT INTO user_info_TEMP (sub, preferred_username, name, email, email_verified, phone_number, phone_number_verified) VALUES
   ('90342.ASDFJWFA','admin','Demo Admin','admin@example.com', false, '+33608273008', true),
-  ('01921.FLANRJQW','user','Demo User','user@example.com', true, '+33608273008', true);
+  ('01921.FLANRJQW','user','Demo User','user@example.com', true, '+33617514306', true);
 
  
 --

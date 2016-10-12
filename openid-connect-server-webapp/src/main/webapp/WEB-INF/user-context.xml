@@ -69,7 +69,8 @@
 
 	<bean id="pathUrlLogoutSuccessHandler" class="org.mitre.openid.connect.config.PathUrlLogoutSuccessHandler" />
 
-	<bean id="userpassSuccessHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+	<bean id="userpassSuccessHandler" class="org.mitre.openid.connect.config.OtpAuthenticationHandler">
+		<constructor-arg value="/" />
 		<constructor-arg value="/otpentry" />
 	</bean>
 

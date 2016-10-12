@@ -14,6 +14,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * This wraps another AuthenticationProvider in order to wrap authenticated tokens
@@ -51,23 +55,32 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		Authentication auth = super.authenticate(authentication);
-		if (auth.isAuthenticated()) {
-			// Generate OTP token
-			String otp = gen.generateToken();
-			tokenstore.putToken(auth.getName(), otp);
-			UserInfo userInfo = userInfoService.getByUsername(auth.getName());
-			logger.warn(otp + " " + auth.getName());
-			if (environment.getActiveProfiles() == null || environment.getActiveProfiles().length == 0) {
-				sendStrategy.send(otp, userInfo.getPhoneNumber());
-			} else {
-				for (String profile : environment.getActiveProfiles()) {
-					if (!profile.equals("dev")) {
-						sendStrategy.send(otp, userInfo.getPhoneNumber());
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String acrValue = "";
+		if (request.getSession().getAttribute("acr") != null) {
+			acrValue = (String) request.getSession().getAttribute("acr");
+		}
+		if (acrValue.contains("sms")) {
+			if (auth.isAuthenticated()) {
+				// Generate OTP token
+				String otp = gen.generateToken();
+				tokenstore.putToken(auth.getName(), otp);
+				UserInfo userInfo = userInfoService.getByUsername(auth.getName());
+				logger.warn(otp + " " + auth.getName());
+				if (environment.getActiveProfiles() == null || environment.getActiveProfiles().length == 0) {
+					sendStrategy.send(otp, userInfo.getPhoneNumber());
+				} else {
+					for (String profile : environment.getActiveProfiles()) {
+						if (!profile.equals("dev")) {
+							sendStrategy.send(otp, userInfo.getPhoneNumber());
+						}
 					}
 				}
 			}
+			return new PreOtpAuthenticationToken(auth);
+		} else {
+			return auth;
 		}
-		return new PreOtpAuthenticationToken(auth);
 	}
 
 	public void setOtpGenerator(OtpGenerator generator) {
