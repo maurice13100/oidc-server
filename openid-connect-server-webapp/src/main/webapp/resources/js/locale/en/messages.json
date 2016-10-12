@@ -277,7 +277,7 @@
     },
     "label": {
         "user": {
-            "userName": "User name",
+            "userName": "Username",
             "email": "Email",
             "password": "Password",
             "confirmPass": "Password confirmation",
@@ -502,14 +502,14 @@
 		"server-message": "The server said: "
 	},
 	"login": {
-		"login_with_username_and_password": "Login with Username and Password",
+		"login_with_username_and_password": "Sign in to your X-Connect account",
 		"login_with_phone": "Login with a one time password send on your phone",
 		"login_with_otp": "Login with the code sent to your phone",
-		"username": "Username",
-		"password": "Password",
-        "otptoken": "One Time Password",
-		"phone": "Phone number",
-		"login-button": "Login",
+		"username": "Enter your username",
+		"password": "Enter your password",
+        "otptoken": "Enter the token",
+		"phone": "Enter your phone number",
+		"login-button": "Sign in",
 		"error": "The system was unable to log you in. Please try again.",
         "submit": "Submit"
 	}

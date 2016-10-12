@@ -16,32 +16,40 @@
 
     //-->
 </script>
-<o:topbar />
 <div class="container-fluid main">
 
-    <h1><spring:message code="login.login_with_otp"/></h1>
+    <div class="row-fluid">
+        <div class="span3 custom-center ">
+            <h1 class="banner"><a href="home">X-CONNECT</a></h1>
+        </div>
+    </div>
+
+
+    <div class="row-fluid">
+        <div class="text-center">
+            <h3><spring:message code="login.login_with_otp"/></h3>
+        </div>
+    </div>
 
     <c:if test="${ param.error != null }">
         <div class="alert alert-error"><spring:message code="login.error"/></div>
     </c:if>
 
     <div class="row-fluid">
-        <div class="span6 offset1 well">
-            <p>You will receive your password shortly. Please enter it to finalize authentication.</p>
+        <div class="span3 well custom-card">
+            <p>You will receive your token shortly. Please enter it to finalize authentication.</p>
             <form name="login" method="post" action="validate">
                 <div>
-                    <div class="input-prepend input-block-level">
+                    <div class="input-prepend input-block-level custom-field">
                         <span class="add-on"><i class="icon-lock"></i></span>
                         <input type="text" placeholder="<spring:message code="login.otptoken"/>" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="otptoken" name="otptoken" />
                     </div>
                 </div>
                 <div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <input type="submit" class="btn" value="<spring:message code="login.submit"/>" name="Submit token">
+                    <input type="submit" class="btn btn-block custom-button" value="<spring:message code="login.submit"/>" name="Submit token">
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<o:footer/>

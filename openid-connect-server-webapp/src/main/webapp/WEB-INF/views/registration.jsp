@@ -20,7 +20,17 @@
 <o:topbar/>
 <div class="container-fluid main">
 
-    <h1><spring:message code="register.register_user"/></h1>
+    <div class="row-fluid">
+        <div class="span3 custom-center ">
+            <h1 class="banner"><a href="home">X-CONNECT</a></h1>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="text-center">
+            <h3><spring:message code="register.register_user"/></h3>
+        </div>
+    </div>
 
     <c:if test="${ param.error != null }">
         <div class="alert alert-error"><spring:message code="register.error"/></div>
@@ -28,66 +38,58 @@
 
 
     <div class="row-fluid">
-        <div class="span6 offset1 well">
-            <form:form modelAttribute="user" method="POST" enctype="utf8">
-                <br>
-                <tr>
-                    <td>
-                        <label>
-                            <spring:message code="label.user.userName"></spring:message>
-                        </label>
-                    </td>
-                    <td><form:input path="userName" value=""/></td>
-                    <form:errors path="userName" element="div"/>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            <spring:message code="label.user.email"></spring:message>
-                        </label>
-                    </td>
-                    <td><form:input path="email" value=""/></td>
-                    <form:errors path="email" element="div"/>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            <spring:message code="label.user.phone"></spring:message>
-                        </label>
-                    </td>
-                    <td><form:input path="phone" value=""/></td>
-                    <form:errors path="phone" element="div"/>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            <spring:message code="label.user.password"></spring:message>
-                        </label>
-                    </td>
-                    <td>
-                        <form:input path="password" value="" type="password"/></td>
-                    <form:errors path="password" element="div"/>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            <spring:message code="label.user.confirmPass"></spring:message>
-                        </label>
-                    </td>
-                    <td><form:input path="matchingPassword" value="" type="password"/></td>
-                    <form:errors element="div"/>
-                </tr>
-                <div>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="submit" class="btn" value="<spring:message code="login.login-button"/>" name="submit">
+        <div class="span4 well custom-card">
+            <form:form modelAttribute="user" method="POST" enctype="utf8" cssClass="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="userName"><spring:message
+                            code="label.user.userName"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="userName" path="userName" cssClass="input-block-level" placeholder="Enter your username" value=""/>
+                        <form:errors path="userName" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="email"><spring:message
+                            code="label.user.email"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="email" path="email" cssClass="input-block-level" placeholder="example@email.com" value=""/>
+                        <form:errors path="email" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="phone"><spring:message
+                            code="label.user.phone"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="phone" path="phone" cssClass="input-block-level" placeholder="+22123456789" value=""/>
+                        <form:errors path="phone" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="password"><spring:message
+                            code="label.user.password"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="password" path="password" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="password" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="password"><spring:message
+                            code="label.user.confirmPass"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="matchingPassword" path="matchingPassword" cssClass="input-block-level" value=""/>
+                        <form:errors path="matchingPassword" element="div"/>
+                    </div>
+                </div>
+                <div class="row-fluid some-top">
+                    <div class="span6 offset3">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="submit" class="btn btn-block custom-button btn-large" value="<spring:message code="login.login-button"/>" name="submit" />
+                    </div>
                 </div>
             </form:form>
-            <br>
             <a href="<c:url value="login.html" />">
                 <spring:message code="label.form.loginLink"></spring:message>
             </a>
         </div>
     </div>
 </div>
-
-<o:footer/>
