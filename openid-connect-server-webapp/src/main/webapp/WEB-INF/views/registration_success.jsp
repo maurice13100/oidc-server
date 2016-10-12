@@ -10,17 +10,12 @@
 <o:topbar/>
 <div class="container-fluid main">
     <div class="row-fluid">
-        <div class="span10">
-            <div class="hero-unit">
-                <h1>Registration successful</h1>
-                <ul>
-                    <li>Username : ${user.userName}</li>
-                    <li>Email : ${user.email}</li>
-                    <li>Phone : ${user.phone}</li>
-                </ul>
-            </div>
+        <div class="span6 well custom-card">
+            <h1 class="text-center">Registration successful</h1>
+            <p class="text-center">Username : ${user.userName}</p>
+            <p class="text-center">Email : ${user.email}</p>
+            <p class="text-center">Phone : ${user.phone}</p>
         </div>
     </div>
 </div>
 
-<o:footer/>
