@@ -271,12 +271,11 @@ h1,label {
 
 .banner {
     font-family: Oswald, sans-serif;
-    background: rgba(200, 0, 0, 0.79) !important;
+    background: rgb(214, 43, 21) !important;
     color: white !important;
     text-align: center !important;
     vertical-align: middle !important;
     line-height: 90px !important;
-    text-shadow: 2px 2px #3d2e2e !important;
 }
 
 h1 > a {
