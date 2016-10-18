@@ -51,11 +51,11 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		PhoneNumberAuthenticationToken authenticationToken = (PhoneNumberAuthenticationToken) authentication;
 
-		String phoneNumber = (String) authenticationToken.getPrincipal();
+		String phoneNumber = authenticationToken.getPhoneNumber();
 		UserInfo userInfo = userInfoService.getByPhoneNumber(phoneNumber);
 		if (userInfo != null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userInfo.getPreferredUsername());
-			Authentication resultAuthentication = new PhoneNumberAuthenticationToken(phoneNumber, userDetails.getAuthorities());
+			Authentication resultAuthentication = new PhoneNumberAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), phoneNumber, userDetails.getAuthorities());
 
 			// Generate OTP token
 			String otp = gen.generateToken();

@@ -9,15 +9,23 @@ import java.util.Collection;
 
 public class PhoneNumberAuthenticationToken extends AbstractAuthenticationToken {
 	private String phoneNumber;
+	private String principal;
+	private final String credentials;
 
-	public PhoneNumberAuthenticationToken(String phoneNumber, Collection<? extends GrantedAuthority> authorities) {
+
+	public PhoneNumberAuthenticationToken(String principal, String credentials, String phoneNumber, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
+		this.principal = principal;
+		this.credentials = credentials;
 		this.phoneNumber = phoneNumber;
+
 		super.setAuthenticated(true);
 	}
 
-	public PhoneNumberAuthenticationToken(String phoneNumber) {
+	public PhoneNumberAuthenticationToken(String principal, String credentials, String phoneNumber) {
 		super(null);
+		this.principal = principal;
+		this.credentials = credentials;
 		this.phoneNumber = phoneNumber;
 		setAuthenticated(false);
 	}
@@ -38,11 +46,15 @@ public class PhoneNumberAuthenticationToken extends AbstractAuthenticationToken 
 
 	@Override
 	public Object getCredentials() {
-		return null;
+		return credentials;
 	}
 
 	@Override
 	public Object getPrincipal() {
+		return principal;
+	}
+
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 }

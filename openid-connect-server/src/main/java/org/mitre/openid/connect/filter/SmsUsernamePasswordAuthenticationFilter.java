@@ -1,8 +1,11 @@
 package org.mitre.openid.connect.filter;
 
 import org.mitre.openid.connect.model.PhoneNumberAuthenticationToken;
+import org.mitre.openid.connect.model.UserInfo;
+import org.mitre.openid.connect.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,6 +23,9 @@ import java.io.IOException;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
 
 public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+	@Autowired
+	private UserInfoService userInfoService;
 
 	private static final Logger logger = LoggerFactory.getLogger(SmsUsernamePasswordAuthenticationFilter.class);
 
@@ -103,7 +109,14 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 			}
 
 			phoneNumber = phoneNumber.trim();
-			PhoneNumberAuthenticationToken authRequest = new PhoneNumberAuthenticationToken(phoneNumber);
+
+			UserInfo userInfo = userInfoService.getByPhoneNumber(phoneNumber);
+			PhoneNumberAuthenticationToken authRequest;
+			if (userInfo != null) {
+				authRequest = new PhoneNumberAuthenticationToken(userInfo.getPreferredUsername(), null, phoneNumber);
+			} else {
+				authRequest = new PhoneNumberAuthenticationToken(null, null, phoneNumber);
+			}
 			return this.getAuthenticationManager().authenticate(authRequest);
 		}
 	}

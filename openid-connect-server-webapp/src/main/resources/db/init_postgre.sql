@@ -11,6 +11,7 @@ INSERT INTO client_scope (owner_id, scope) VALUES
 
 INSERT INTO client_redirect_uri (owner_id, redirect_uri) VALUES
   ('1', 'https://www.getpostman.com/oauth2/callback'),
+  ('1', 'http://ns357509.ip-91-121-149.eu:3001/oidc_callback'),
   ('1', 'http://localhost/'),
   ('1', 'http://localhost:8080/');
 
@@ -42,5 +43,5 @@ INSERT INTO authorities (username, authority) VALUES
 -- By default, the username column here has to match the username column in the users table, above
 INSERT INTO user_info (sub, preferred_username, name, email, email_verified, phone_number, phone_number_verified) VALUES
   ('90342.ASDFJWFA','admin','Demo Admin','admin@example.com', false, '+33608273008', true),
-  ('01921.FLANRJQW','user','Demo User','user@example.com', true, '+33608273008', true);
+  ('01921.FLANRJQW','user','Demo User','user@example.com', true, '+33617514306', true);
 
