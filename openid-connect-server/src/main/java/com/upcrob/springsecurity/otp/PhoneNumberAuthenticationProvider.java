@@ -63,10 +63,14 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 
 			logger.warn(otp + " " + resultAuthentication.getName());
 
-			for (String profile : environment.getActiveProfiles()) {
-				if (!profile.equals("dev")) {
-					sendStrategy.send(otp, userInfo.getPhoneNumber());
+			if (environment.getActiveProfiles() != null && environment.getActiveProfiles().length != 0) {
+				for (String profile : environment.getActiveProfiles()) {
+					if (!profile.equals("dev")) {
+						sendStrategy.send(otp, userInfo.getPhoneNumber());
+					}
 				}
+			} else {
+				sendStrategy.send(otp, userInfo.getPhoneNumber());
 			}
 			return new PreOtpAuthenticationToken(resultAuthentication);
 		}
