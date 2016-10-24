@@ -14,24 +14,6 @@
 			<div class="hero-unit">
 				<o:landingPageWelcome />
 			</div>
-			<!-- Example row of columns -->
-			<div class="row-fluid">
-				<div class="span6">
-					<o:landingPageAbout />
-				</div>
-				<div class="span6">
-					<o:landingPageContact />
-				</div>
-
-			</div>
-			<hr>
-			<!-- Example row of columns -->
-			<div class="row-fluid">
-				<div class="span12">
-					<o:landingPageStats />
-				</div>
-			</div>
-
 		</div>
 	</div>
 </div>

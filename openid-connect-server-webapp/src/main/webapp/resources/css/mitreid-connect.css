@@ -28,7 +28,8 @@ h1,label {
 /* login button */
 
 .navbar #userButton,
-.navbar #loginButton {
+.navbar #loginButton,
+.navbar #registrationButton {
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     color: #ffffff;
@@ -45,6 +46,10 @@ h1,label {
 	background-color: #5bb75b;
 	background-image: linear-gradient(to bottom, #62c462, #51a351);
 }
+.navbar #registrationButton {
+	background-color: #b72221;
+	background-image: linear-gradient(to bottom, #d3201c, #a71d19);
+}
 
 .navbar #userButton:focus, .navbar #userButton:hover,
 .navbar #loginButton:focus, .navbar #loginButton:hover {
@@ -59,6 +64,9 @@ h1,label {
 }
 .navbar #loginButton:focus, .navbar #loginButton:hover {
 	background-color: #51a351;
+}
+.navbar #registrationButton:focus, .navbar #registrationButton:hover {
+    background-color: #9c201f;
 }
 
 .navbar #userButton:active,

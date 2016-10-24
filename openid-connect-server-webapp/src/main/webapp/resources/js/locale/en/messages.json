@@ -381,7 +381,7 @@
     	"empty": "There are no blacklisted URIs on this server.",
     	"uri": "URI"
     },
-	"copyright": "Powered by <a href=\"https://github.com/mitreid-connect/\">MITREid Connect <span class=\"label\">{0}</span></a> <span class=\"pull-right\">&copy; 2016 The MITRE Corporation and MIT Internet Trust Consortium.</span>.",
+	"copyright": "Powered by <a href=\"https://www.fiatope.com/digital/\">Fiatope Digital Services <span class=\"label\">{0}</span></a>",
 	"about": {
 		"title": "About",
 		"body": "\nThis OpenID Connect service is built from the MITREid Connect Open Source project, from \n<a href=\"http://www.mitre.org/\">The MITRE Corporation</a> and the <a href=\"http://kit.mit.edu/\">MIT Internet Trust Consortium</a>.\n</p>\n<p>\nMore information about the project can be found at \n<a href=\"http://github.com/mitreid-connect/\">MITREid Connect on GitHub</a>. \nThere, you can submit bug reports, give feedback, or even contribute code patches for additional features you'd like to see."
@@ -395,8 +395,8 @@
     "home": {
     	"title": "Home",
     	"welcome": {
-    		"title": "Welcome!",
-			"body": "\nOpenID Connect is an internet-scale federated identity protocol built on top of the OAuth2 authorization framework. \nOpenID Connect lets you log into a remote site using your identity without exposing your credentials, like a username and password.</p>\n<p><a class=\"btn btn-primary btn-large\" href=\"http://openid.net/connect/\">Learn more &raquo;</a>"
+    		"title": "X Connect Account Management",
+			"body": "\n\nLog in to your developer account to change your Service Provider settings. X Connect lets you log into a remote site using your identity without exposing your credentials, like a username and password."
 		},
 		"more": "More",
 		"about": {

@@ -58,7 +58,7 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String acrValue = "";
 		if (request.getSession().getAttribute("acr") != null) {
-			acrValue = (String) request.getSession().getAttribute("acr_values");
+			acrValue = request.getSession().getAttribute("acr_values") != null ? (String) request.getSession().getAttribute("acr_values") : "";
 		}
 		if (acrValue.contains("sms")) {
 			if (auth.isAuthenticated()) {

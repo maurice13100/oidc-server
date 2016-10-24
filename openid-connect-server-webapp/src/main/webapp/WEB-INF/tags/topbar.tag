@@ -43,50 +43,6 @@
 			</a>
 			<c:if test="${ not empty pageName }">
 				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<c:choose>
-							<c:when test="${pageName == 'Home'}">
-								<li class="active"><a href="" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.home"/></a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.home"/></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when test="${pageName == 'Registration'}">
-								<li class="active" data-toggle="collapse" data-target=".nav-collapse"><a href=""><spring:message code="topbar.registration"/></a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="registration" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.registration"/></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when test="${pageName == 'About'}">
-								<li class="active" data-toggle="collapse" data-target=".nav-collapse"><a href=""><spring:message code="topbar.about"/></a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="about" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.about"/></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when test="${pageName == 'Statistics'}">
-								<li class="active" data-toggle="collapse" data-target=".nav-collapse"><a href=""><spring:message code="topbar.statistics"/></a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="stats" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.statistics"/></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when test="${pageName == 'Contact'}">
-								<li class="active" data-toggle="collapse" data-target=".nav-collapse"><a href=""><spring:message code="topbar.contact"/></a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="contact" data-toggle="collapse" data-target=".nav-collapse"><spring:message code="topbar.contact"/></a></li>
-							</c:otherwise>
-						</c:choose>
-	
-					</ul>
-	
 						<security:authorize access="hasRole('ROLE_USER')">
 		
 							<ul class="nav hidden-desktop">
@@ -108,8 +64,11 @@
 						</li>
 	                    </security:authorize>
 	                    <security:authorize access="!hasRole('ROLE_USER')">
-	                    <li>
-	                    	<a id="loginButton" href="login" data-toggle="collapse" data-target=".nav-collapse"><i class="icon-lock icon-white"></i> <spring:message code="topbar.login"/></a>
+						<li>
+							<a id="registrationButton" href="registration" data-toggle="collapse" data-target=".nav-collapse"><i class="icon-pencil icon-white"></i> <spring:message code="topbar.registration"/></a>
+						</li>
+						<li>
+	                    	<a id="loginButton" href="login" data-toggle="collapse" data-target=".nav-Ncollapse"><i class="icon-lock icon-white"></i> <spring:message code="topbar.login"/></a>
 	                    </li>
 	                    </security:authorize>
 	                </ul>
