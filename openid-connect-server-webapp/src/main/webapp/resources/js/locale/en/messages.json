@@ -395,8 +395,8 @@
     "home": {
     	"title": "Home",
     	"welcome": {
-    		"title": "X Connect Account Management",
-			"body": "\n\nLog in to your developer account to change your Service Provider settings. X Connect lets you log into a remote site using your identity without exposing your credentials, like a username and password."
+    		"title": "Your X Connect account",
+            "body": "\n\nX Connect lets you log into a remote site using your identity without having to remember a username and password. You create your X Connect account once for all and login to other web sites using this account <ul><li>Log in to your account to change your profile information. These information will appear at a web site where you log in via X Connect</li><li>Log in to your developer account to change your Service Provider settings.</li></ul>"
 		},
 		"more": "More",
 		"about": {
