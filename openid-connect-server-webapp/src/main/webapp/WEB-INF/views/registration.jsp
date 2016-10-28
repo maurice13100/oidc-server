@@ -48,6 +48,76 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label custom-control-label" for="givenName"><spring:message code="label.user.givenName"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="givenName" path="givenName" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="givenName" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="familyName"><spring:message code="label.user.familyName"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="familyName" path="familyName" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="familyName" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="middleName"><spring:message code="label.user.middleName"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="middleName" path="middleName" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="middleName" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="gender"><spring:message code="label.user.gender"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="gender" path="gender" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="gender" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="birthdate"><spring:message code="label.user.birthdate"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="birthdate" path="birthdate" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="birthdate" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="streetAddress"><spring:message code="label.user.streetAddress"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="streetAddress" path="streetAddress" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="streetAddress" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="locality"><spring:message code="label.user.locality"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="locality" path="locality" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="locality" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="region"><spring:message code="label.user.region"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="region" path="region" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="region" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="postalCode"><spring:message code="label.user.postalCode"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="postalCode" path="postalCode" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="postalCode" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label custom-control-label" for="country"><spring:message code="label.user.country"></spring:message></label>
+                    <div class="controls">
+                        <form:input id="country" path="country" cssClass="input-block-level" placeholder="" value=""/>
+                        <form:errors path="country" element="div"/>
+                    </div>
+                </div>
+                <div class="control-group">
                     <label class="control-label custom-control-label" for="email"><spring:message code="label.user.email"></spring:message></label>
                     <div class="controls">
                         <form:input id="email" path="email" cssClass="input-block-level" placeholder="example@email.com" value=""/>

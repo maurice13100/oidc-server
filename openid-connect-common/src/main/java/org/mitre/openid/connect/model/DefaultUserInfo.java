@@ -20,18 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.mitre.openid.connect.model.convert.JsonObjectStringConverter;
 
@@ -372,7 +361,7 @@ public class DefaultUserInfo implements UserInfo {
 	 * @see org.mitre.openid.connect.model.UserInfo#getAddress()
 	 */
 	@Override
-	@OneToOne(targetEntity = DefaultAddress.class)
+	@OneToOne(targetEntity = DefaultAddress.class, cascade = CascadeType.ALL)
 	@JoinColumn(name="address_id")
 	public Address getAddress() {
 		return address;

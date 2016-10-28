@@ -281,7 +281,17 @@
             "email": "Email",
             "password": "Password",
             "confirmPass": "Password confirmation",
-            "phone" : "Phone number"
+            "phone" : "Phone number",
+            "givenName": "Given name",
+            "familyName": "Family name",
+            "middleName": "Middle name",
+            "gender": "Gender",
+            "birthdate": "Birth date",
+            "streetAddress": "Street address",
+            "locality": "Locality",
+            "postalCode": "Postal Code",
+            "country": "Country",
+            "region": "Region"
         },
         "form": {
             "submit": "Submit registration",
