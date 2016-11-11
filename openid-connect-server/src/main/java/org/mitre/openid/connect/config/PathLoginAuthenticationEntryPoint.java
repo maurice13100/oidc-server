@@ -1,6 +1,7 @@
 package org.mitre.openid.connect.config;
 
 import org.mitre.openid.connect.request.ConnectRequestParameters;
+import org.mitre.openid.connect.util.AcrEnum;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
@@ -23,7 +24,7 @@ public class PathLoginAuthenticationEntryPoint extends LoginUrlAuthenticationEnt
 	private String getLoginFromSessionAcrValues(HttpServletRequest request) {
 		String attribute = (String) request.getSession().getAttribute(ConnectRequestParameters.ACR_VALUES);
 		if (attribute != null) {
-			if (attribute.equals("sms")) {
+			if (attribute.equals(AcrEnum.SMS.getValue())) {
 				return LOGIN_SMS;
 			}
 		}

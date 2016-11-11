@@ -6,6 +6,7 @@ import com.upcrob.springsecurity.otp.send.SendStrategy;
 import com.upcrob.springsecurity.otp.tokenstore.Tokenstore;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
+import org.mitre.openid.connect.util.AcrEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.EnvironmentAware;
@@ -60,7 +61,7 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 		if (request.getSession().getAttribute("acr") != null) {
 			acrValue = request.getSession().getAttribute("acr_values") != null ? (String) request.getSession().getAttribute("acr_values") : "";
 		}
-		if (acrValue.contains("sms")) {
+		if (acrValue.contains(AcrEnum.SMS.getValue())) {
 			if (auth.isAuthenticated()) {
 				// Generate OTP token
 				String otp = gen.generateToken();

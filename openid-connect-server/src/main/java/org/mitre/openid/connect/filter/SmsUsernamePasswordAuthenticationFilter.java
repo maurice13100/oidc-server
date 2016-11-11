@@ -3,6 +3,7 @@ package org.mitre.openid.connect.filter;
 import org.mitre.openid.connect.model.PhoneNumberAuthenticationToken;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
+import org.mitre.openid.connect.util.AcrEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 	private static final Logger logger = LoggerFactory.getLogger(SmsUsernamePasswordAuthenticationFilter.class);
 
 	public static final String SPRING_SECURITY_FORM_PHONE_NUMBER_KEY = "j_phone_number";
-	public static final String AMR_SMS = "sms";
-	public static final String AMR_PWD = "pwd";
+	public static final String AMR_SMS = AcrEnum.SMS.getValue();
+	public static final String AMR_PWD = AcrEnum.PWD.getValue();
 
 	private String phoneNumberParameter = "j_phone_number";
 
@@ -51,12 +52,12 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 		} else {
 			int valuesNumber = acr_value.split(" ").length;
 			boolean hasSms = false;
-			if (acr_value.contains("pwd")) {
+			if (acr_value.contains(AcrEnum.PWD.getValue())) {
 				setValueInSession(request, AMR, AMR_PWD);
 				setValueInSession(request, ACR, AMR_PWD);
 			}
 
-			if (acr_value.contains("sms")) {
+			if (acr_value.contains(AcrEnum.SMS.getValue())) {
 				setValueInSession(request, AMR, AMR_SMS);
 				setValueInSession(request, ACR, AMR_SMS);
 				hasSms = true;

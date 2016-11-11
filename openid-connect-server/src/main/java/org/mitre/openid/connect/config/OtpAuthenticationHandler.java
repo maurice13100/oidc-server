@@ -1,6 +1,7 @@
 package org.mitre.openid.connect.config;
 
 import org.mitre.openid.connect.filter.AuthorizationRequestFilter;
+import org.mitre.openid.connect.util.AcrEnum;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -27,7 +28,7 @@ public class OtpAuthenticationHandler extends SavedRequestAwareAuthenticationSuc
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-		if (httpServletRequest.getSession().getAttribute("acr") != null && ((String) httpServletRequest.getSession().getAttribute("acr")).contains("sms")) {
+		if (httpServletRequest.getSession().getAttribute("acr") != null && ((String) httpServletRequest.getSession().getAttribute("acr")).contains(AcrEnum.SMS.getValue())) {
 			handleOtp(httpServletRequest, httpServletResponse, authentication);
 		} else {
 			Date authTimestamp = new Date();
@@ -62,7 +63,7 @@ public class OtpAuthenticationHandler extends SavedRequestAwareAuthenticationSuc
 			acrValue = (String) request.getSession().getAttribute("acr");
 		}
 
-		if (acrValue.contains("sms")) {
+		if (acrValue.contains(AcrEnum.SMS.getValue())) {
 			return otpUrl;
 		}
 		return "";
