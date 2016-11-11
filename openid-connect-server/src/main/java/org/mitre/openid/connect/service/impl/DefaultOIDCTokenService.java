@@ -147,20 +147,13 @@ public class DefaultOIDCTokenService implements OIDCTokenService {
 			idClaims.claim("nonce", nonce);
 		}
 
-		//TODO deal with essential parameter
-		//TODO check if extensions are still here, what request is it
-//		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-//		ServletRequestAttributes attr = (ServletRequestAttributes)
-//			RequestContextHolder.currentRequestAttributes();
-//		HttpSession session= attr.getRequest().getSession(true);
 		String acrValues = (String) request.getExtensions().get(ACR_VALUES);
 		if (!Strings.isNullOrEmpty(acrValues)) {
 			idClaims.claim(ACR_VALUES, acrValues);
-		}
-
-		String amrValue = (String) request.getExtensions().get(AMR);
-		if (!Strings.isNullOrEmpty(amrValue)) {
-			idClaims.claim(AMR, amrValue);
+			idClaims.claim(AMR, acrValues);
+		} else if (!Strings.isNullOrEmpty((String) accessToken.getAuthenticationHolder().getExtensions().get(ACR_VALUES))) {
+			idClaims.claim(ACR_VALUES, accessToken.getAuthenticationHolder().getExtensions().get(ACR_VALUES));
+			idClaims.claim(AMR, accessToken.getAuthenticationHolder().getExtensions().get(ACR_VALUES));
 		}
 
 		Set<String> responseTypes = request.getResponseTypes();
