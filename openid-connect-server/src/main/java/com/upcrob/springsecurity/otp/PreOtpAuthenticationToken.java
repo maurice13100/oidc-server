@@ -6,22 +6,27 @@ import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 /**
- * Wrapper token that contains an embedded token that has already been authenticated.
- * Presence of this token indicates that users have passed primary authentication (e.g.
- * username/password), but have yet to validate their OTP credentials.  Once OTP credentials
- * have been validated, the embedded token is unwrapped and placed in the security context.
+ * Wrapper token that contains an embedded token that has already been
+ * authenticated. Presence of this token indicates that users have passed
+ * primary authentication (e.g. username/password), but have yet to validate
+ * their OTP credentials. Once OTP credentials have been validated, the embedded
+ * token is unwrapped and placed in the security context.
  */
 public class PreOtpAuthenticationToken implements Authentication {
-	
+
+	/**
+	 * UID.
+	 */
+	private static final long serialVersionUID = -5892971233672908881L;
+
 	private Authentication embeddedToken;
-	
+
 	public PreOtpAuthenticationToken(Authentication auth) {
 		embeddedToken = auth;
 	}
-	
+
 	public Authentication getEmbeddedToken() {
 		return embeddedToken;
 	}
@@ -58,8 +63,7 @@ public class PreOtpAuthenticationToken implements Authentication {
 	}
 
 	@Override
-	public void setAuthenticated(boolean isAuthenticated)
-			throws IllegalArgumentException {
+	public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
 		embeddedToken.setAuthenticated(isAuthenticated);
 	}
 }

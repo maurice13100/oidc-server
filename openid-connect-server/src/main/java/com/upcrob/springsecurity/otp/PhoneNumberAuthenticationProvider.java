@@ -29,11 +29,8 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 	private UserDetailsService userDetailsService;
 	private Environment environment;
 
-	public PhoneNumberAuthenticationProvider(
-		UserInfoService userInfoService,
-		UserDetailsService userDetailsService,
-		Tokenstore tokenstore,
-		SendStrategy sendStrategy) {
+	public PhoneNumberAuthenticationProvider(UserInfoService userInfoService, UserDetailsService userDetailsService,
+			Tokenstore tokenstore, SendStrategy sendStrategy) {
 		if (tokenstore == null) {
 			throw new IllegalArgumentException("Tokenstore must not be null.");
 		}
@@ -55,7 +52,8 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 		UserInfo userInfo = userInfoService.getByPhoneNumber(phoneNumber);
 		if (userInfo != null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userInfo.getPreferredUsername());
-			Authentication resultAuthentication = new PhoneNumberAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), phoneNumber, userDetails.getAuthorities());
+			Authentication resultAuthentication = new PhoneNumberAuthenticationToken(userDetails.getUsername(),
+					userDetails.getPassword(), phoneNumber, userDetails.getAuthorities());
 
 			// Generate OTP token
 			String otp = gen.generateToken();

@@ -1,8 +1,22 @@
 package org.mitre.openid.connect.filter;
 
+import static org.mitre.openid.connect.request.ConnectRequestParameters.ACR;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.ACR_VALUES;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.AMR;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.mitre.openid.connect.model.PhoneNumberAuthenticationToken;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
+import org.mitre.openid.connect.service.impl.RegistrationBySmsService;
 import org.mitre.openid.connect.util.AcrEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,20 +27,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.util.Assert;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
-
 public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Autowired
 	private UserInfoService userInfoService;
+
+	@Autowired
+	private RegistrationBySmsService registrationBySmsService;
 
 	private static final Logger logger = LoggerFactory.getLogger(SmsUsernamePasswordAuthenticationFilter.class);
 
@@ -41,7 +48,8 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 	}
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String acr_value = (String) request.getSession().getAttribute(ACR_VALUES);
@@ -63,18 +71,17 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 				hasSms = true;
 			}
 
-			if (valuesNumber > 1) {
-				chain.doFilter(request, response);
-			} else if (valuesNumber == 1 && hasSms){
+			if (valuesNumber == 1 && hasSms) {
 				super.doFilter(req, res, chain);
-			} else {
+			} else { // valuesNumber > 1
 				chain.doFilter(request, response);
 			}
 		}
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) throws AuthenticationException {
 		logger.debug("Attempting authentication");
 		Authentication authentication = null;
 		String acr_value = (String) httpServletRequest.getSession().getAttribute(ACR_VALUES);
@@ -112,13 +119,14 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 			phoneNumber = phoneNumber.trim();
 
 			UserInfo userInfo = userInfoService.getByPhoneNumber(phoneNumber);
-			PhoneNumberAuthenticationToken authRequest;
-			if (userInfo != null) {
-				authRequest = new PhoneNumberAuthenticationToken(userInfo.getPreferredUsername(), null, phoneNumber);
-			} else {
-				authRequest = new PhoneNumberAuthenticationToken(null, null, phoneNumber);
+
+			// User don't exist
+			if (userInfo == null) {
+				userInfo = registrationBySmsService.registerNewUser(phoneNumber);
 			}
-			return this.getAuthenticationManager().authenticate(authRequest);
+
+			return this.getAuthenticationManager().authenticate(
+					new PhoneNumberAuthenticationToken(userInfo.getPreferredUsername(), null, phoneNumber));
 		}
 	}
 
