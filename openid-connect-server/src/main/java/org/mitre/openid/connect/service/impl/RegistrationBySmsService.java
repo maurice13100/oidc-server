@@ -3,9 +3,7 @@ package org.mitre.openid.connect.service.impl;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mitre.openid.connect.model.DefaultUserInfo;
-import org.mitre.openid.connect.model.User;
-import org.mitre.openid.connect.model.UserInfo;
+import org.mitre.openid.connect.model.*;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.mitre.openid.connect.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,7 @@ public class RegistrationBySmsService {
 	 */
 	public UserInfo registerNewUser(String phoneNumber) {
 
+		final String email = phoneNumber + "@xconnect.com";
 		final String pwd = generateTemporaryPassword();
 
 		final User user = new User();
@@ -42,10 +41,11 @@ public class RegistrationBySmsService {
 		user.setEnabled(true);
 		UserInfo userInfo = new DefaultUserInfo();
 		userInfo.setPreferredUsername(phoneNumber);
-		userInfo.setEmail(phoneNumber + "@xconnect.com");
+		userInfo.setEmail(email);
 		userInfo.setPhoneNumber(phoneNumber);
 		userInfo.setSub(UUID.randomUUID().toString().replace("-", ""));
 		userService.registerNewUser(user);
+		userService.registerUserAuthority(new Authority(user, "ROLE_USER"));
 		userInfoService.registerNewUser(userInfo);
 
 		smsSendStrategy.sendSms(String.format("Your temporary password is %s.", pwd), phoneNumber);
