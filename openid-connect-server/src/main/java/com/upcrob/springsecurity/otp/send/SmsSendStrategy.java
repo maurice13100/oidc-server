@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
  * is recommended.
  */
 public class SmsSendStrategy implements SendStrategy {
-	private static final String URL = "41.74.172.132:8080/SMSServiceProvider/sendSMS";
+	private static final String URL = "http://41.74.172.132:8080/SMSServiceProvider/sendSMS";
 	private static final String SOURCE = "FIATOP";
 	private static final String CONTRACT_ID = "127433452";
 
