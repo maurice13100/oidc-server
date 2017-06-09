@@ -55,7 +55,7 @@ public class SmsSendStrategy implements SendStrategy {
 	 * @param phoneNumber
 	 *            The user phone number
 	 */
-	public void sendSms(String message, String phoneNumber) {
+	private void sendSms(String message, String phoneNumber) {
 		CloseableHttpClient client = HttpClients.createDefault();
 
 		try {
