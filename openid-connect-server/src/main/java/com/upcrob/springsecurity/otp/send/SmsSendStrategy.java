@@ -46,7 +46,7 @@ public class SmsSendStrategy implements SendStrategy {
 	 * @param phoneNumber
 	 *            The user phone number
 	 */
-	public void sendSms(String body, String phoneNumber) {
+	private void sendSms(String body, String phoneNumber) {
 		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
 
 		// Build a filter for the MessageList

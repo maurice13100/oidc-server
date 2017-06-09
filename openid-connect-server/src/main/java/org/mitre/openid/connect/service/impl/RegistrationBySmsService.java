@@ -9,8 +9,6 @@ import org.mitre.openid.connect.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.upcrob.springsecurity.otp.send.SmsSendStrategy;
-
 @Service
 public class RegistrationBySmsService {
 
@@ -19,9 +17,6 @@ public class RegistrationBySmsService {
 
 	@Autowired
 	private UserInfoService userInfoService;
-
-	@Autowired
-	private SmsSendStrategy smsSendStrategy;
 
 	/**
 	 * Register a new user with his phone number.
@@ -48,8 +43,6 @@ public class RegistrationBySmsService {
 		userService.registerUserAuthority(new Authority(user, "ROLE_USER"));
 		userInfoService.registerNewUser(userInfo);
 
-		smsSendStrategy.sendSms(String.format("Your temporary password is %s.", pwd), phoneNumber);
-
 		return userInfo;
 	}
 
@@ -57,6 +50,6 @@ public class RegistrationBySmsService {
 	 * @return a temporary password
 	 */
 	private String generateTemporaryPassword() {
-		return RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+		return RandomStringUtils.randomAlphanumeric(10).toUpperCase();
 	}
 }
