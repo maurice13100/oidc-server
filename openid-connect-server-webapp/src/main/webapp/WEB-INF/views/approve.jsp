@@ -25,15 +25,16 @@
 	<c:remove scope="session" var="SPRING_SECURITY_LAST_EXCEPTION" />
 
 	<div class="well" style="text-align: center">
-		<h1><spring:message code="approve.required_for"/>&nbsp;
+		<h1>
 			<c:choose>
 				<c:when test="${empty client.clientName}">
-					<em><c:out value="${client.clientId}" /></em>
+					<c:set var="argClient" value="${client.clientId}" />
 				</c:when>
 				<c:otherwise>
-					<em><c:out value="${client.clientName}" /></em>
+					<c:set var="argClient" value="${client.clientName}" />
 				</c:otherwise>
 			</c:choose>
+			<spring:message code="approve.required_for" arguments="${argClient}" />&nbsp;
 		</h1>
 
 		<form name="confirmationForm"
