@@ -114,49 +114,6 @@
 							</div>
 						</div>
 					</c:if>
-					<c:if test="${ (not empty client.clientDescription) || (not empty client.clientUri) || (not empty client.policyUri) || (not empty client.tosUri) || (not empty contacts) }">
-						<div class="muted moreInformationContainer">
-							<c:out value="${client.clientDescription}" />
-							<c:if test="${ (not empty client.clientUri) || (not empty client.policyUri) || (not empty client.tosUri)  || (not empty contacts) }">
-								<div id="toggleMoreInformation" style="cursor: pointer;">
-									<small><i class="icon-chevron-right"></i> <spring:message code="approve.more_information"/></small>
-								</div>
-								<div id="moreInformation" class="hide">
-									<ul>
-										<c:if test="${ not empty client.clientUri }">
-											<li><spring:message code="approve.home_page"/>: <a href="<c:out value="${ client.clientUri }" />"><c:out value="${ client.clientUri }" /></a></li>
-										</c:if>
-										<c:if test="${ not empty client.policyUri }">
-											<li><spring:message code="Policy"/>: <a href="<c:out value="${ client.policyUri }" />"><c:out value="${ client.policyUri }" /></a></li>
-										</c:if>
-										<c:if test="${ not empty client.tosUri }">
-											<li><spring:message code="approve.terms"/>: <a href="<c:out value="${ client.tosUri }" />"><c:out value="${ client.tosUri }" /></a></li>
-										</c:if>
-										<c:if test="${ (not empty contacts) }">
-											<li><spring:message code="approve.contacts"/>: <c:out value="${ contacts }" /></li>
-										</c:if>
-									</ul>
-								</div>
-							</c:if>
-						</div>
-					</c:if>
-					<div>
-						<c:choose>
-							<c:when test="${ empty client.redirectUris }">
-								<div class="alert alert-block alert-error">
-									<h4>
-										<i class="icon-info-sign"></i> <spring:message code="approve.warning"/>:
-									</h4>
-									<spring:message code="approve.no_redirect_uri"/>
-									<spring:message code="approve.redirect_uri" arguments="${redirect_uri}"/>
-								</div>
-							</c:when>
-							<c:otherwise>
-                                <spring:message code="approve.redirect_uri" arguments="${redirect_uri}" />
-							</c:otherwise>
-						</c:choose>
-					</div>
-
 					<c:if test="${ client.subjectType == 'PAIRWISE' }">
 						<div class="alert alert-success">
 							<spring:message code="approve.pairwise"/>
@@ -231,7 +188,7 @@
 					<fieldset style="text-align: left" class="well">
 						<legend style="margin-bottom: 0;"><spring:message code="approve.remember.title"/>:</legend>
 						<label for="remember-forever" class="radio"> 
-						<input type="radio" name="remember" id="remember-forever" value="until-revoked"  ${ !consent ? 'checked="checked"' : '' }> 
+						<input type="radio" name="remember" id="remember-forever" value="until-revoked"> 
 							<spring:message code="approve.remember.until_revoke"/>
 						</label> 
 						<label for="remember-hour" class="radio"> 
@@ -239,7 +196,7 @@
 							<spring:message code="approve.remember.one_hour"/>
 						</label> 
 						<label for="remember-not" class="radio"> 
-						<input type="radio" name="remember" id="remember-not" value="none" ${ consent ? 'checked="checked"' : '' }>
+						<input type="radio" name="remember" id="remember-not" value="none" checked="checked">
 							<spring:message code="approve.remember.next_time"/>
 						</label>
 					</fieldset>
