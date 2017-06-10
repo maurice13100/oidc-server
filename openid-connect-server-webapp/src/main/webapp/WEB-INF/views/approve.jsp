@@ -34,7 +34,7 @@
 					<c:set var="argClient" value="${client.clientName}" />
 				</c:otherwise>
 			</c:choose>
-			<spring:message code="approve.required_for" arguments="${argClient}" />&nbsp;
+			<spring:message code="approve.required_for" arguments="<em>${argClient}</em>" />&nbsp;
 		</h1>
 
 		<form name="confirmationForm"
