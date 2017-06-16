@@ -31,7 +31,7 @@ import com.google.gson.JsonObject;
 public class SmsSendStrategy implements SendStrategy {
 	private static final String URL = "http://41.74.172.132:8080/SMSServiceProvider/sendSMS";
 	private static final String SOURCE = "FIATOP";
-	private static final String CONTRACT_ID = "127433452";
+	private static final String CONTRACT_ID = "250727444568";
 
 	private static final Logger logger = LoggerFactory.getLogger(SmsSendStrategy.class);
 
@@ -75,8 +75,8 @@ public class SmsSendStrategy implements SendStrategy {
 
 			CloseableHttpResponse response = client.execute(httpPost);
 			int statusCode = response.getStatusLine().getStatusCode();
-			HttpEntity httpEntity = response.getEntity();
 			if (statusCode != 200) {
+				HttpEntity httpEntity = response.getEntity();
 				logger.error("It is too bad !!! [code error={}, message={}]", statusCode,
 						httpEntity != null ? EntityUtils.toString(httpEntity) : "");
 			}
