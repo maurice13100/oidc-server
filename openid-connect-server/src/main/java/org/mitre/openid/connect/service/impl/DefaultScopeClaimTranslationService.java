@@ -42,7 +42,7 @@ public class DefaultScopeClaimTranslationService implements ScopeClaimTranslatio
 	 * Default constructor; initializes scopesToClaims map
 	 */
 	public DefaultScopeClaimTranslationService() {
-		scopesToClaims.put("openid", "sub");
+		/*scopesToClaims.put("openid", "sub");
 
 		scopesToClaims.put("profile", "name");
 		scopesToClaims.put("profile", "preferred_username");
@@ -65,7 +65,7 @@ public class DefaultScopeClaimTranslationService implements ScopeClaimTranslatio
 		scopesToClaims.put("phone", "phone_number");
 		scopesToClaims.put("phone", "phone_number_verified");
 
-		scopesToClaims.put("address", "address");
+		scopesToClaims.put("address", "address");*/
 	}
 
 	/* (non-Javadoc)

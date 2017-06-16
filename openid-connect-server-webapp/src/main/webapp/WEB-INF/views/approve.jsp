@@ -120,9 +120,10 @@
 							<spring:message code="approve.pairwise"/>
 						</div>
 					</c:if>
-
 				</div>
-				<div class="span4">
+			</div>
+			<div class="row" style="text-align: center">
+				<div class="span4" >
 					<fieldset style="text-align: left" class="well">
 						<legend style="margin-bottom: 0;"><spring:message code="approve.access_to"/>:</legend>
 
@@ -202,7 +203,6 @@
 						</label>
 					</fieldset>
 				</div>
-
 			</div>
 
 			<div class="row">

@@ -19,8 +19,12 @@
  */
 package org.mitre.oauth2.web;
 
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_SEPARATOR;
+
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -57,9 +61,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 
-import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT;
-import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_SEPARATOR;
-
 /**
  * @author jricher
  *
@@ -67,7 +68,9 @@ import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_S
 @Controller
 @SessionAttributes("authorizationRequest")
 public class OAuthConfirmationController {
-
+	
+	// Display only some scopes
+	private static final List<String> SCOPES = Arrays.asList("email", "phone", "profile");
 
 	@Autowired
 	private ClientDetailsEntityService clientService;
@@ -161,19 +164,19 @@ public class OAuthConfirmationController {
 
 		// pre-process the scopes
 		Set<SystemScope> scopes = scopeService.fromStrings(authRequest.getScope());
-
+		
 		Set<SystemScope> sortedScopes = new LinkedHashSet<>(scopes.size());
 		Set<SystemScope> systemScopes = scopeService.getAll();
 
 		// sort scopes for display based on the inherent order of system scopes
 		for (SystemScope s : systemScopes) {
-			if (scopes.contains(s)) {
+			if (scopes.contains(s) && SCOPES.contains(s.getValue())) {
 				sortedScopes.add(s);
 			}
 		}
 
 		// add in any scopes that aren't system scopes to the end of the list
-		sortedScopes.addAll(Sets.difference(scopes, systemScopes));
+		//sortedScopes.addAll(Sets.difference(scopes, systemScopes));
 
 		model.put("scopes", sortedScopes);
 
