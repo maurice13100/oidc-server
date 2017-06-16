@@ -36,6 +36,7 @@ public class RegistrationBySmsService {
 		user.setEnabled(true);
 		UserInfo userInfo = new DefaultUserInfo();
 		userInfo.setPreferredUsername(phoneNumber);
+		userInfo.setName(phoneNumber);
 		userInfo.setEmail(email);
 		userInfo.setPhoneNumber(phoneNumber);
 		userInfo.setSub(UUID.randomUUID().toString().replace("-", ""));
