@@ -24,7 +24,6 @@ import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_S
 
 import java.net.URISyntaxException;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -68,9 +67,6 @@ import com.google.gson.JsonObject;
 @Controller
 @SessionAttributes("authorizationRequest")
 public class OAuthConfirmationController {
-	
-	// Display only some scopes
-	private static final List<String> SCOPES = Arrays.asList("email", "phone", "profile");
 
 	@Autowired
 	private ClientDetailsEntityService clientService;
@@ -105,12 +101,13 @@ public class OAuthConfirmationController {
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping("/oauth/confirm_access")
-	public String confimAccess(Map<String, Object> model, @ModelAttribute("authorizationRequest") AuthorizationRequest authRequest,
-			Principal p) {
+	public String confimAccess(Map<String, Object> model,
+			@ModelAttribute("authorizationRequest") AuthorizationRequest authRequest, Principal p) {
 
-		// Check the "prompt" parameter to see if we need to do special processing
+		// Check the "prompt" parameter to see if we need to do special
+		// processing
 
-		String prompt = (String)authRequest.getExtensions().get(PROMPT);
+		String prompt = (String) authRequest.getExtensions().get(PROMPT);
 		List<String> prompts = Splitter.on(PROMPT_SEPARATOR).splitToList(Strings.nullToEmpty(prompt));
 		ClientDetailsEntity client = null;
 
@@ -142,7 +139,14 @@ public class OAuthConfirmationController {
 
 				uriBuilder.addParameter("error", "interaction_required");
 				if (!Strings.isNullOrEmpty(authRequest.getState())) {
-					uriBuilder.addParameter("state", authRequest.getState()); // copy the state parameter if one was given
+					uriBuilder.addParameter("state", authRequest.getState()); // copy
+																				// the
+																				// state
+																				// parameter
+																				// if
+																				// one
+																				// was
+																				// given
 				}
 
 				return "redirect:" + uriBuilder.toString();
@@ -161,22 +165,21 @@ public class OAuthConfirmationController {
 
 		model.put("redirect_uri", redirect_uri);
 
-
 		// pre-process the scopes
 		Set<SystemScope> scopes = scopeService.fromStrings(authRequest.getScope());
-		
+
 		Set<SystemScope> sortedScopes = new LinkedHashSet<>(scopes.size());
 		Set<SystemScope> systemScopes = scopeService.getAll();
 
 		// sort scopes for display based on the inherent order of system scopes
 		for (SystemScope s : systemScopes) {
-			if (scopes.contains(s) && SCOPES.contains(s.getValue())) {
+			if (scopes.contains(s)) {
 				sortedScopes.add(s);
 			}
 		}
 
 		// add in any scopes that aren't system scopes to the end of the list
-		//sortedScopes.addAll(Sets.difference(scopes, systemScopes));
+		sortedScopes.addAll(Sets.difference(scopes, systemScopes));
 
 		model.put("scopes", sortedScopes);
 
@@ -207,14 +210,14 @@ public class OAuthConfirmationController {
 		Integer count = statsService.getCountForClientId(client.getId());
 		model.put("count", count);
 
-
 		// contacts
 		if (client.getContacts() != null) {
 			String contacts = Joiner.on(", ").join(client.getContacts());
 			model.put("contacts", contacts);
 		}
 
-		// if the client is over a week old and has more than one registration, don't give such a big warning
+		// if the client is over a week old and has more than one registration,
+		// don't give such a big warning
 		// instead, tag as "Generally Recognized As Safe" (gras)
 		Date lastWeek = new Date(System.currentTimeMillis() - (60 * 60 * 24 * 7 * 1000));
 		if (count > 1 && client.getCreatedAt() != null && client.getCreatedAt().before(lastWeek)) {
@@ -234,11 +237,11 @@ public class OAuthConfirmationController {
 	}
 
 	/**
-	 * @param clientService the clientService to set
+	 * @param clientService
+	 *            the clientService to set
 	 */
 	public void setClientService(ClientDetailsEntityService clientService) {
 		this.clientService = clientService;
 	}
-
 
 }

@@ -140,7 +140,17 @@
 
 						<c:forEach var="scope" items="${ scopes }">
 
-							<label for="scope_${ fn:escapeXml(scope.value) }" class="checkbox"> 
+
+								<c:choose>
+									<c:when test="${ scope.value == 'email' || scope.value == 'phone' || scope.value == 'profile'}">
+										<c:set value="" var="cssStyle"></c:set>
+									</c:when>
+									<c:otherwise>
+										<c:set value="display:none;" var="cssStyle"></c:set>
+									</c:otherwise>
+								</c:choose>
+						
+							<label for="scope_${ fn:escapeXml(scope.value) }" class="checkbox" style="${cssStyle}"> 
 								<input type="checkbox" name="scope_${ fn:escapeXml(scope.value) }" id="scope_${ fn:escapeXml(scope.value) }" value="${ fn:escapeXml(scope.value) }" checked="checked"> 
 								<c:if test="${ not empty scope.icon }">
 									<i class="icon-${ fn:escapeXml(scope.icon) }"></i>
