@@ -41,7 +41,7 @@
         <div class="span5 well custom-card">
             <form:form modelAttribute="user" method="POST" enctype="utf8" cssClass="form-horizontal">
                 <div class="control-group">
-                    <label class="control-label custom-control-label" for="userName"><spring:message code="label.user.userName"></spring:message></label>
+                    <label class="control-label custom-control-label" for="userName"><spring:message code="label.user.userName"></spring:message>*</label>
                     <div class="controls">
                         <form:input id="userName" path="userName" cssClass="input-block-level" placeholder="Enter your username" value=""/>
                         <form:errors path="userName" element="div"/>
@@ -118,28 +118,28 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label custom-control-label" for="email"><spring:message code="label.user.email"></spring:message></label>
+                    <label class="control-label custom-control-label" for="email"><spring:message code="label.user.email"></spring:message>*</label>
                     <div class="controls">
                         <form:input id="email" path="email" cssClass="input-block-level" placeholder="example@email.com" value=""/>
                         <form:errors path="email" element="div"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label custom-control-label" for="phone"><spring:message code="label.user.phone"></spring:message></label>
+                    <label class="control-label custom-control-label" for="phone"><spring:message code="label.user.phone"></spring:message>*</label>
                     <div class="controls">
                         <form:input id="phone" path="phone" cssClass="input-block-level" placeholder="+22123456789" value=""/>
                         <form:errors path="phone" element="div"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label custom-control-label" for="password"><spring:message code="label.user.password"></spring:message></label>
+                    <label class="control-label custom-control-label" for="password"><spring:message code="label.user.password"></spring:message>*</label>
                     <div class="controls">
                         <form:input id="password" path="password" cssClass="input-block-level" type="password" placeholder="" value=""/>
                         <form:errors path="password" element="div"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label custom-control-label" for="password"><spring:message code="label.user.confirmPass"></spring:message></label>
+                    <label class="control-label custom-control-label" for="password"><spring:message code="label.user.confirmPass"></spring:message>*</label>
                     <div class="controls">
                         <form:input id="matchingPassword" path="matchingPassword" type="password" cssClass="input-block-level" value=""/>
                         <form:errors path="matchingPassword" element="div"/>
