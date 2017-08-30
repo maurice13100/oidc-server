@@ -1,6 +1,7 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
- *   and the MIT Internet Trust Consortium
+ * Copyright 2017 The MIT Internet Trust Consortium
+ *
+ * Portions copyright 2011-2013 The MITRE Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +28,7 @@ import com.google.common.collect.SetMultimap;
 
 /**
  * Service to map scopes to claims, and claims to Java field names
- * 
+ *
  * @author Amanda Anganes
  *
  */
@@ -66,11 +67,8 @@ public class DefaultScopeClaimTranslationService implements ScopeClaimTranslatio
 		scopesToClaims.put("address", "address");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#
-	 * getClaimsForScope(java.lang.String)
+	/* (non-Javadoc)
+	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#getClaimsForScope(java.lang.String)
 	 */
 	@Override
 	public Set<String> getClaimsForScope(String scope) {
@@ -81,11 +79,8 @@ public class DefaultScopeClaimTranslationService implements ScopeClaimTranslatio
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#
-	 * getClaimsForScopeSet(java.util.Set)
+	/* (non-Javadoc)
+	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#getClaimsForScopeSet(java.util.Set)
 	 */
 	@Override
 	public Set<String> getClaimsForScopeSet(Set<String> scopes) {

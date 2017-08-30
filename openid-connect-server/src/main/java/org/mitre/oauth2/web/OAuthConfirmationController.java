@@ -1,6 +1,7 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
- *   and the MIT Internet Trust Consortium
+ * Copyright 2017 The MIT Internet Trust Consortium
+ *
+ * Portions copyright 2011-2013 The MITRE Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +16,7 @@
  * limitations under the License.
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.mitre.oauth2.web;
 
@@ -68,6 +69,7 @@ import com.google.gson.JsonObject;
 @SessionAttributes("authorizationRequest")
 public class OAuthConfirmationController {
 
+
 	@Autowired
 	private ClientDetailsEntityService clientService;
 
@@ -101,13 +103,12 @@ public class OAuthConfirmationController {
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping("/oauth/confirm_access")
-	public String confimAccess(Map<String, Object> model,
-			@ModelAttribute("authorizationRequest") AuthorizationRequest authRequest, Principal p) {
+	public String confimAccess(Map<String, Object> model, @ModelAttribute("authorizationRequest") AuthorizationRequest authRequest,
+			Principal p) {
 
-		// Check the "prompt" parameter to see if we need to do special
-		// processing
+		// Check the "prompt" parameter to see if we need to do special processing
 
-		String prompt = (String) authRequest.getExtensions().get(PROMPT);
+		String prompt = (String)authRequest.getExtensions().get(PROMPT);
 		List<String> prompts = Splitter.on(PROMPT_SEPARATOR).splitToList(Strings.nullToEmpty(prompt));
 		ClientDetailsEntity client = null;
 
@@ -139,14 +140,7 @@ public class OAuthConfirmationController {
 
 				uriBuilder.addParameter("error", "interaction_required");
 				if (!Strings.isNullOrEmpty(authRequest.getState())) {
-					uriBuilder.addParameter("state", authRequest.getState()); // copy
-																				// the
-																				// state
-																				// parameter
-																				// if
-																				// one
-																				// was
-																				// given
+					uriBuilder.addParameter("state", authRequest.getState()); // copy the state parameter if one was given
 				}
 
 				return "redirect:" + uriBuilder.toString();
@@ -164,6 +158,7 @@ public class OAuthConfirmationController {
 		String redirect_uri = authRequest.getRedirectUri();
 
 		model.put("redirect_uri", redirect_uri);
+
 
 		// pre-process the scopes
 		Set<SystemScope> scopes = scopeService.fromStrings(authRequest.getScope());
@@ -207,8 +202,9 @@ public class OAuthConfirmationController {
 		model.put("claims", claimsForScopes);
 
 		// client stats
-		Integer count = statsService.getCountForClientId(client.getId());
+		Integer count = statsService.getCountForClientId(client.getClientId()).getApprovedSiteCount();
 		model.put("count", count);
+
 
 		// contacts
 		if (client.getContacts() != null) {
@@ -216,8 +212,7 @@ public class OAuthConfirmationController {
 			model.put("contacts", contacts);
 		}
 
-		// if the client is over a week old and has more than one registration,
-		// don't give such a big warning
+		// if the client is over a week old and has more than one registration, don't give such a big warning
 		// instead, tag as "Generally Recognized As Safe" (gras)
 		Date lastWeek = new Date(System.currentTimeMillis() - (60 * 60 * 24 * 7 * 1000));
 		if (count > 1 && client.getCreatedAt() != null && client.getCreatedAt().before(lastWeek)) {
@@ -237,11 +232,11 @@ public class OAuthConfirmationController {
 	}
 
 	/**
-	 * @param clientService
-	 *            the clientService to set
+	 * @param clientService the clientService to set
 	 */
 	public void setClientService(ClientDetailsEntityService clientService) {
 		this.clientService = clientService;
 	}
+
 
 }

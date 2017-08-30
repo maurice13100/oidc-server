@@ -23,7 +23,7 @@ ui.routes.push({
 			text: $.t('admin.home'),
 			href: ""
 		}, {
-			text: $.t('admin.user-profile.show'),
+			text: $.t('admin.user-profile.title'),
 			href: "manage/#user/profile"
 		}]);
 
@@ -37,4 +37,26 @@ ui.routes.push({
 		setPageTitle($.t('admin.user-profile.show'));
 
 	}
+});
+
+
+ui.routes.push({
+	path: "user/profile/edit",
+	name: "editProfile",
+	callback: function() {
+		this.breadCrumbView.collection.reset();
+        this.breadCrumbView.collection.add([
+             {text:$.t('admin.home'), href:""},
+             {text:$.t('admin.user-profile.title'), href:"manage/#user/profile"},
+             {text:$.t('admin.user-profile.edit'), href:"manage/#user/profile/edit"}
+        ]);
+   
+        this.updateSidebar('user/profile');
+        
+        var view = new EditUserProfileView({model: getUserInfo()});
+        $('#content').html(view.render().el);
+        
+        setPageTitle($.t('admin.user-profile.edit'));
+        
+    }
 });

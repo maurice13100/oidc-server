@@ -1,6 +1,7 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
- *   and the MIT Internet Trust Consortium
+ * Copyright 2017 The MIT Internet Trust Consortium
+ *
+ * Portions copyright 2011-2013 The MITRE Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +16,19 @@
  * limitations under the License.
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.mitre.openid.connect.filter;
 
-import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.ERROR;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.LOGIN_HINT;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.LOGIN_REQUIRED;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.MAX_AGE;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_LOGIN;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_NONE;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_SEPARATOR;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.STATE;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -85,11 +94,11 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 
 	@Autowired(required = false)
 	private LoginHintExtracter loginHintExtracter = new RemoveLoginHintsWithHTTP();
-	
+
 	private RequestMatcher requestMatcher = new AntPathRequestMatcher("/authorize");
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -97,8 +106,6 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpSession session = request.getSession();
-		
-		logger.info("filtring ...");
 
 		// skip everything that's not an authorize URL
 		if (!requestMatcher.matches(request)) {
@@ -107,7 +114,7 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 		}
 
 		try {
-			// we have to create our own auth request in order to get at all the parameters appropriately
+			// we have to create our own auth request in order to get at all the parmeters appropriately
 			AuthorizationRequest authRequest = null;
 
 			ClientDetailsEntity client = null;
@@ -127,8 +134,8 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 			}
 
 			if (authRequest.getExtensions().get(ACR_VALUES) != null) {
-				session.setAttribute(ACR_VALUES, authRequest.getExtensions().get(ACR_VALUES));
-			}
+ 				session.setAttribute(ACR_VALUES, authRequest.getExtensions().get(ACR_VALUES));
+ 			}
 
 			if (authRequest.getExtensions().get(PROMPT) != null) {
 				// we have a "prompt" parameter
