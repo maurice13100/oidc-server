@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.mitre.openid.connect.service;
 
+import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserInfo;
 
 /**
@@ -29,6 +30,7 @@ public interface UserInfoService {
 	/**
 	 * Get the UserInfo for the given username (usually maps to the
 	 * preferredUsername field).
+	 * 
 	 * @param username
 	 * @return
 	 */
@@ -36,8 +38,9 @@ public interface UserInfoService {
 
 	/**
 	 * Get the UserInfo for the given username (usually maps to the
-	 * preferredUsername field) and clientId. This allows pairwise
-	 * client identifiers where appropriate.
+	 * preferredUsername field) and clientId. This allows pairwise client
+	 * identifiers where appropriate.
+	 * 
 	 * @param username
 	 * @param clientId
 	 * @return
@@ -62,8 +65,13 @@ public interface UserInfoService {
 
 	/**
 	 * Register a new user
-	 * @param newUser the new user
+	 * 
+	 * @param newUser
+	 *            the new user
 	 * @return the created user
 	 */
 	public UserInfo registerNewUser(UserInfo newUser);
+
+	public UserInfo updateUser(DefaultUserInfo userToUpdate);
+
 }

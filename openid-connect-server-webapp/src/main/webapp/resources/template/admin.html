@@ -101,6 +101,11 @@
 		<dd><span class="text-info" data-i18n="admin.user-profile.value">Claim value:</span></dt>
     </dl>
 
+
+     <div class="well well-small">
+   		<button class="btn btn-edit"><i class="icon-edit"></i> <span data-i18n="common.edit">Edit</span></button> 
+     </div>		
+
 </script>
 
 <script type="text/html" id="tmpl-user-profile-element">
@@ -108,6 +113,112 @@
             <dt><% if (typeof(category) !== 'undefined') { %>
 				<small class="muted"><%- category %>.</small><% } %><%- key %></dt>
             <dd><%- value %></dd>
+
+</script>
+
+<script type="text/html" id="tmpl-user-profile-from">
+
+    <h1 data-i18n="admin.user-profile.edit">Edit Profile Information</h1>
+
+<form class="form-horizontal">
+		<fieldset>
+
+            <div class="well well-small">
+                <button class="btn btn-small btn-save btn-success"><i class="icon-ok-circle icon-white"></i> <span data-i18n="common.save">Save</span></button> &nbsp; 
+				<button class="btn btn-small btn-cancel"><i class="icon-ban-circle"></i> <span data-i18n="common.cancel">Cancel</span></button>
+            </div>			
+
+			<div class="control-group" id="given_name">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Given name</label>
+				<div class="controls">
+					<input value="<%-given_name != null ? given_name : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="family_name">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Family Name</label>
+				<div class="controls">
+					<input value="<%-family_name != null ? family_name : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="middle_name">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Middle Name</label>
+				<div class="controls">
+					<input value="<%-middle_name != null ? middle_name : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="birthdate">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Birth date</label>
+				<div class="controls">
+					<input value="<%-birthdate != null ? birthdate : ''%>" type="text" class="" >
+				</div>
+			</div>
+		
+			<div class="control-group" id="email">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Email</label>
+				<div class="controls">
+					<input value="<%-email != null ? email : ''%>" type="text" class="" >
+				</div>
+			</div>
+			
+			<div class="control-group" id="street_address">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Street address</label>
+				<div class="controls">
+					<input value="<%-address.street_address != null ? address.street_addres : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="locality">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Locality</label>
+				<div class="controls">
+					<input value="<%-address.locality != null ? address.locality : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="region">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Region</label>
+				<div class="controls">
+					<input value="<%-address.region != null ? address.region : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="postal_code">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Postal code</label>
+				<div class="controls">
+					<input value="<%-address.postal_code != null ? address.postal_code : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="country">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Country</label>
+				<div class="controls">
+					<input value="<%-address.country != null ? address.country : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="newPassword">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">New password</label>
+				<div class="controls">
+					<input value="" type="password" class="" >
+				</div>
+			</div>
+
+			<div class="control-group" id="newMatchingPassword">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">New password confirmation</label>
+				<div class="controls">
+					<input value="" type="password" class="" >
+				</div>
+			</div>
+
+            <div class="well well-small">
+                <button class="btn btn-small btn-save btn-success"><i class="icon-ok-circle icon-white"></i> <span data-i18n="common.save">Save</span></button> &nbsp; 
+                <button class="btn btn-small btn-cancel"><i class="icon-ban-circle"></i> <span data-i18n="common.cancel">Cancel</span></button>
+            </div>			
+
+		</fieldset>
+	</form>
 
 </script>
 

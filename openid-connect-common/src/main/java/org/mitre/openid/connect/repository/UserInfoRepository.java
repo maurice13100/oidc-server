@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.mitre.openid.connect.repository;
 
+import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserInfo;
 
 /**
@@ -52,4 +53,7 @@ public interface UserInfoRepository {
 	public UserInfo getByPhoneNumber(String phoneNumber);
 
 	public UserInfo registerNewUser(UserInfo newUser);
+	
+	public UserInfo updateUser(DefaultUserInfo userToUpdate);
+
 }

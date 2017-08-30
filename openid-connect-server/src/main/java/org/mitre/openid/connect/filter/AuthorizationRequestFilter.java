@@ -97,6 +97,8 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpSession session = request.getSession();
+		
+		logger.info("filtring ...");
 
 		// skip everything that's not an authorize URL
 		if (!requestMatcher.matches(request)) {

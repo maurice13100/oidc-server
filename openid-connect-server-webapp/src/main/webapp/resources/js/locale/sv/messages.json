@@ -381,7 +381,7 @@
 			"title": "Personligt",
 			"approved_sites": "Hantera godkända platser",
 			"active_tokens": "Hantera aktiva biljetter",
-			"profile_information": "Visa profilinformation"
+            "profile_information": "Manage Profile Information"
 		},
 		"developer": {
 			"title": "Utvecklare",

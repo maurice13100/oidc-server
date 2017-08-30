@@ -16,7 +16,8 @@
             "claim": "Claim name:",
             "show": "View User Profile",
             "text": "Your user profile has the following information:",
-            "value": "Claim value:"
+            "value": "Claim value:",
+            "edit" : "Edit Profile"
         }
     },
     "client": {
@@ -440,7 +441,7 @@
 			"title": "Personal",
 			"approved_sites": "Manage Approved Sites",
 			"active_tokens": "Manage Active Tokens",
-			"profile_information": "View Profile Information"
+            "profile_information": "Manage Profile Information"
 		},
 		"developer": {
 			"title": "Developer",

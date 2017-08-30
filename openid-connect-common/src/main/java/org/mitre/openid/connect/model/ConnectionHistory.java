@@ -24,35 +24,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
-@Table(name = "user_connections")
-@NamedQueries({
-		@NamedQuery(name = UserConnection.QUERY_BY_CLIENT_ID, query = "select uc from UserConnection uc where uc.clientId = :"
-				+ UserConnection.PARAM_CLIENT_ID) })
-public class UserConnection {
+import org.mitre.oauth2.model.ClientDetailsEntity;
 
-	public static final String QUERY_BY_CLIENT_ID = "UserConnection.getByClientId";
-	public static final String PARAM_CLIENT_ID = "clientId";
+@Entity
+@Table(name = "connection_history")
+public class ConnectionHistory {
 
 	private Long id;
 	private Date date;
 	private String userId;
 	private String clientId;
-	// SMS or PWD
-	private ConnectionType connectionType;
-	private boolean isSuccess;
-	private boolean isSentSms;
 
 	/**
 	 * Empty constructor
 	 */
-	public UserConnection() {
+	public ConnectionHistory() {
 
 	}
 
@@ -74,9 +64,6 @@ public class UserConnection {
 		this.id = id;
 	}
 
-	/**
-	 * @return the connection date
-	 */
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "expiration")
@@ -84,96 +71,26 @@ public class UserConnection {
 		return date;
 	}
 
-	/**
-	 * @param date
-	 *            The connection date to set
-	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	/**
-	 * @return the user id
-	 */
-	@Column(name = "user_id")
+	@Basic
+	@Column(name = "formatted")
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * @param user
-	 *            id The user id to set
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the client id
-	 */
-	@Column(name = "client_id")
 	public String getClientId() {
 		return clientId;
 	}
 
-	/**
-	 * @param client
-	 *            id The client id to set
-	 */
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 
-	/**
-	 * @return the connection type
-	 */
-	public ConnectionType getConnectionType() {
-		return connectionType;
-	}
-
-	/**
-	 * @param connectionType
-	 *            The connection type to set
-	 */
-	public void setConnectionType(ConnectionType connectionType) {
-		this.connectionType = connectionType;
-	}
-
-	/**
-	 * @return the flag success
-	 */
-	public boolean isSuccess() {
-		return isSuccess;
-	}
-
-	/**
-	 * @param isSuccess
-	 *            The flag success to set
-	 */
-	public void setSuccess(boolean isSuccess) {
-		this.isSuccess = isSuccess;
-	}
-
-	/**
-	 * @return the flag sentSms
-	 */
-	public boolean isSentSms() {
-		return isSentSms;
-	}
-
-	/**
-	 * @param isSentSms
-	 *            The flag sentSms to set
-	 */
-	public void setSentSms(boolean isSentSms) {
-		this.isSentSms = isSentSms;
-	}
-
-	/**
-	 * Enum to define the connection type.
-	 *
-	 */
-	public enum ConnectionType {
-		SMS, PWD;
-	}
 }

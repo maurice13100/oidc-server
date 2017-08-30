@@ -1,5 +1,6 @@
 package org.mitre.openid.connect.web;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mitre.oauth2.repository.AuthenticationHolderRepository;
 import org.mitre.openid.connect.model.*;
 import org.mitre.openid.connect.service.UserInfoService;
@@ -27,7 +28,8 @@ public class OnlineRegistrationEndpoint {
 	private final UserService userService;
 
 	@Autowired
-	public OnlineRegistrationEndpoint(UserService userService, UserInfoService userInfoService, AuthenticationHolderRepository authenticationHolderRepository) {
+	public OnlineRegistrationEndpoint(UserService userService, UserInfoService userInfoService,
+			AuthenticationHolderRepository authenticationHolderRepository) {
 		this.userService = userService;
 		this.userInfoService = userInfoService;
 	}
@@ -40,8 +42,7 @@ public class OnlineRegistrationEndpoint {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView registerNewUser(@ModelAttribute("user") @Valid UserDTO accountDTO,
-										BindingResult result) {
+	public ModelAndView registerNewUser(@ModelAttribute("user") @Valid UserDTO accountDTO, BindingResult result) {
 		if (!result.hasErrors()) {
 			User user = mapDtoToUser(accountDTO);
 			UserInfo userInfo = mapDtoToUserInfo(accountDTO);
@@ -62,7 +63,8 @@ public class OnlineRegistrationEndpoint {
 		final UserInfo userInfo = new DefaultUserInfo();
 		userInfo.setPreferredUsername(userDTO.getUserName());
 		userInfo.setEmail(userDTO.getEmail());
-		userInfo.setPhoneNumber(userDTO.getPhone());
+		final String rwandaNumber = "25" + StringUtils.substring(userDTO.getPhone(), 1);
+		userInfo.setPhoneNumber(rwandaNumber);
 		userInfo.setName(userDTO.getFamilyName() + " " + userDTO.getMiddleName());
 		userInfo.setGivenName(userDTO.getGivenName());
 		userInfo.setFamilyName(userDTO.getFamilyName());
