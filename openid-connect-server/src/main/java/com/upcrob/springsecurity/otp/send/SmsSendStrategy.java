@@ -1,6 +1,7 @@
 package com.upcrob.springsecurity.otp.send;
 
-import org.apache.commons.io.IOUtils;
+import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -11,7 +12,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationServiceException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -36,9 +36,6 @@ public class SmsSendStrategy implements SendStrategy {
 
 	private static final Logger logger = LoggerFactory.getLogger(SmsSendStrategy.class);
 
-	private EmailSendStrategy emailSendStrategy = new EmailSendStrategy("smtp.gmail.com", 587,
-			"rambertmaurice@gmail.com");
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -48,12 +45,8 @@ public class SmsSendStrategy implements SendStrategy {
 	 */
 	@Override
 	public void send(String token, String phoneNumber) {
-		emailSendStrategy.setUseTls(true);
-		emailSendStrategy.setUsername("rambertmaurice@gmail.com");
-		emailSendStrategy.setPassword("Ilove,om13100/");
-//		emailSendStrategy.send("Your connection's token is " + token + " . Enter it to login",
-				//"rambertmaurice@gmail.com");
-		//sendSms("Your connection's token is " + token + " . Enter it to login", phoneNumber);
+		// sendSms("Your connection's token is " + token + " . Enter it to
+		// login", phoneNumber);
 	}
 
 	/**
@@ -84,16 +77,21 @@ public class SmsSendStrategy implements SendStrategy {
 
 			CloseableHttpResponse response = client.execute(httpPost);
 			HttpEntity httpEntity = response.getEntity();
-			logger.info("message={}", httpEntity != null ? EntityUtils.toString(httpEntity) : "");
+			String content = httpEntity != null ? EntityUtils.toString(httpEntity) : "";
+			logger.info("message={}", content);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
 				logger.error("It is too bad !!! [code error={}]", statusCode);
 			}
-			IOUtils.closeQuietly(response);
+			response.close();
 		} catch (Exception e) {
 			logger.error("Error occured during sending sms", e);
 		} finally {
-			IOUtils.closeQuietly(client);
+			try {
+				client.close();
+			} catch (IOException e) {
+				logger.error("Issue during closing the client", e);
+			}
 		}
 	}
 }

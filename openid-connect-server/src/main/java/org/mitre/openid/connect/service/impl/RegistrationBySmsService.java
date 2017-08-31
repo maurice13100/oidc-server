@@ -3,7 +3,10 @@ package org.mitre.openid.connect.service.impl;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mitre.openid.connect.model.*;
+import org.mitre.openid.connect.model.Authority;
+import org.mitre.openid.connect.model.DefaultUserInfo;
+import org.mitre.openid.connect.model.User;
+import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.mitre.openid.connect.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

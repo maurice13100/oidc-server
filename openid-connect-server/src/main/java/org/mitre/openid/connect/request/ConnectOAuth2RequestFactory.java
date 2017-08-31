@@ -17,7 +17,7 @@
  *******************************************************************************/
 package org.mitre.openid.connect.request;
 
--import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.AUD;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.CLAIMS;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.CLIENT_ID;

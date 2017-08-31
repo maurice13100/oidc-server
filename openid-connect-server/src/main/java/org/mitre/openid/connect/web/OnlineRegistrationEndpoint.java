@@ -1,8 +1,17 @@
 package org.mitre.openid.connect.web;
 
+import java.util.UUID;
+
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.mitre.oauth2.repository.AuthenticationHolderRepository;
-import org.mitre.openid.connect.model.*;
+import org.mitre.openid.connect.model.Address;
+import org.mitre.openid.connect.model.Authority;
+import org.mitre.openid.connect.model.DefaultAddress;
+import org.mitre.openid.connect.model.DefaultUserInfo;
+import org.mitre.openid.connect.model.User;
+import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.mitre.openid.connect.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
-import java.util.UUID;
 
 @Controller
 @RequestMapping(value = OnlineRegistrationEndpoint.URL)

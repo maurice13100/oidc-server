@@ -20,6 +20,7 @@
  */
 package org.mitre.openid.connect.filter;
 
+import static org.mitre.openid.connect.request.ConnectRequestParameters.ACR_VALUES;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.ERROR;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.LOGIN_HINT;
 import static org.mitre.openid.connect.request.ConnectRequestParameters.LOGIN_REQUIRED;

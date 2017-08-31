@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mitre.openid.connect.service.impl.DefaultUserConnectionService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
@@ -30,9 +32,9 @@ public class PathUrlAuthenticationFailureHandler extends SimpleUrlAuthentication
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-		
-		if (exception.getAuthentication() != null && exception.getAuthentication() instanceof OAuth2Authentication) {
-			defaultUserConnectionService.failureConnection(request, exception.getAuthentication());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null && auth instanceof OAuth2Authentication) {
+			defaultUserConnectionService.failureConnection(request, auth);
 		}
 
 		if (!getFailureUrlFromPath(request).isEmpty()) {
