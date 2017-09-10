@@ -31,6 +31,7 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 
 	public PhoneNumberAuthenticationProvider(UserInfoService userInfoService, UserDetailsService userDetailsService,
 			Tokenstore tokenstore, SendStrategy sendStrategy) {
+
 		if (tokenstore == null) {
 			throw new IllegalArgumentException("Tokenstore must not be null.");
 		}
@@ -47,6 +48,7 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		PhoneNumberAuthenticationToken authenticationToken = (PhoneNumberAuthenticationToken) authentication;
+		logger.info("maurice PhoneNumberAuthenticationProvider");
 
 		String phoneNumber = authenticationToken.getPhoneNumber();
 		UserInfo userInfo = userInfoService.getByPhoneNumber(phoneNumber);
@@ -78,6 +80,7 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 
 	@Override
 	public boolean supports(Class<?> authentication) {
+		logger.info("maurice supported");
 		return authentication.equals(PhoneNumberAuthenticationToken.class);
 	}
 

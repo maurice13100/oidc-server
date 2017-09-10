@@ -55,6 +55,7 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		logger.info("maurice OtpGeneratingAuthenticationProvider");
 		Authentication auth = super.authenticate(authentication);
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String acrValue = "";
@@ -95,4 +96,11 @@ public class OtpGeneratingAuthenticationProvider extends DaoAuthenticationProvid
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
 	}
+
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return true;
+	}
+
+	
 }

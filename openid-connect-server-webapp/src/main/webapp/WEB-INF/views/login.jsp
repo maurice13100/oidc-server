@@ -39,7 +39,7 @@ $(document).ready(function() {
 		<div class="span3 well custom-card ">
 			<img src="resources/images/user.jpg" class="img-circle custom-image">
 
-			<form action="${ config.issuer }${ config.issuer.endsWith('/') ? '' : '/' }j_spring_security_check" method="POST">
+			<form action="${ config.issuer }${ config.issuer.endsWith('/') ? '' : '/' }login" method="POST">
 				<div>
 					<div class="input-prepend input-block-level custom-field">
 						<span class="add-on"><i class="icon-user"></i></span>
