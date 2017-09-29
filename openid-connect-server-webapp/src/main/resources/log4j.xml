@@ -32,10 +32,10 @@
 		<level value="debug" />
 	</logger>
 	<logger name="org.mitre.oauth2">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	<logger name="org.mitre.discovery">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	<logger name="org.mitre.jose">
 		<level value="info" />
@@ -64,11 +64,11 @@
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 
 	<logger name="org.springframework.security">
-		<level value="warn" />
+		<level value="debug" />
 	</logger>
 
 	<!-- Root Logger -->

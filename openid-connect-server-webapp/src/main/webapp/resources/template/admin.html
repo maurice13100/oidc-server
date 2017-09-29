@@ -126,7 +126,14 @@
             <div class="well well-small">
                 <button class="btn btn-small btn-save btn-success"><i class="icon-ok-circle icon-white"></i> <span data-i18n="common.save">Save</span></button> &nbsp; 
 				<button class="btn btn-small btn-cancel"><i class="icon-ban-circle"></i> <span data-i18n="common.cancel">Cancel</span></button>
-            </div>			
+            </div>
+
+            <div class="control-group" id="preferred_username">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Username</label>
+				<div class="controls">
+					<input value="<%-preferred_username != null ? preferred_username : ''%>" type="text" class="" >
+				</div>
+			</div>		
 
 			<div class="control-group" id="given_name">
 				<label class="control-label" data-i18n="scope.system-scope-form.value">Given name</label>
@@ -142,17 +149,18 @@
 				</div>
 			</div>
 
-			<div class="control-group" id="middle_name">
-				<label class="control-label" data-i18n="scope.system-scope-form.value">Middle Name</label>
-				<div class="controls">
-					<input value="<%-middle_name != null ? middle_name : ''%>" type="text" class="" >
-				</div>
-			</div>
-
 			<div class="control-group" id="birthdate">
 				<label class="control-label" data-i18n="scope.system-scope-form.value">Birth date</label>
 				<div class="controls">
 					<input value="<%-birthdate != null ? birthdate : ''%>" type="text" class="" >
+				</div>
+			</div>
+
+
+			<div class="control-group" id="phone_number">
+				<label class="control-label" data-i18n="scope.system-scope-form.value">Phone number</label>
+				<div class="controls">
+					<input value="<%-phone_number != null ? phone_number : ''%>" type="text" class="" >
 				</div>
 			</div>
 		

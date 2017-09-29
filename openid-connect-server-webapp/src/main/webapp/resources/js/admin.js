@@ -468,21 +468,31 @@ var UserProfileView = Backbone.View.extend({
                     return;
                 }
 
+                if(key == 'gender'){
+                    return;
+                }
+
                 if(key == 'preferred_username'){
-                    key = 'username'
+                    key = 'Username';
                 }
 
                 if(key == 'phone_number'){
-                    key = 'Phone number'
+                    key = 'Phone number';
+                }
+
+                if(key == 'given_name'){
+                    key = 'Given name';
                 }
 
                 if(key == 'family_name'){
-                    key = 'Family name'
+                    key = 'Family name';
                 }
 
                 if(key == 'middle_name'){
-                    key = 'Middle name'
+                    return;
                 }
+
+                key = key.charAt(0).toUpperCase() + key.slice(1)
         		
         		if (typeof(value) === 'object') {
         			

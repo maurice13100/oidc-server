@@ -69,7 +69,7 @@
 
 	<bean id="pathUrlAuthenticationFailureHandler"
 		class="org.mitre.openid.connect.config.PathUrlAuthenticationFailureHandler">
-		<constructor-arg index ="0" ref="defaultUserConnectionService" />
+		<constructor-arg index="0" ref="defaultUserConnectionService" />
 	</bean>
 
 	<bean id="pathLoginAuthenticationEntryPoint"
@@ -84,7 +84,6 @@
 		class="org.mitre.openid.connect.config.OtpAuthenticationHandler">
 		<constructor-arg index="0" value="/" />
 		<constructor-arg index="1" value="/otpentry" />
-		<constructor-arg index="2" ref="defaultUserConnectionService" />
 	</bean>
 
 	<!-- Validation filter definition -->
