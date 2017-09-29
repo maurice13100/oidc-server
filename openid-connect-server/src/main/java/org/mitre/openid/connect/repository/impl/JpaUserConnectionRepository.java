@@ -50,6 +50,7 @@ public class JpaUserConnectionRepository implements UserConnectionRepository {
 	public Collection<UserConnection> getByClientId(String clientId) {
 		TypedQuery<UserConnection> query = entityManager.createNamedQuery(UserConnection.QUERY_BY_CLIENT_ID,
 				UserConnection.class);
+		query.setParameter(UserConnection.PARAM_CLIENT_ID, clientId);
 		return query.getResultList();
 	}
 

@@ -24,17 +24,24 @@ import java.lang.reflect.Type;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.mitre.openid.connect.model.UserInfo;
+import org.mitre.openid.connect.service.UserConnectionService;
 import org.mitre.openid.connect.service.UserInfoService;
+import org.mitre.util.UserConnectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.google.common.base.Joiner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -43,39 +50,68 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 /**
- * Injects the UserInfo object for the current user into the current model's context, if both exist. Allows JSPs and the like to call "userInfo.name" and other fields.
+ * Injects the UserInfo object for the current user into the current model's
+ * context, if both exist. Allows JSPs and the like to call "userInfo.name" and
+ * other fields.
  * 
  * @author jricher
  *
  */
 public class UserInfoInterceptor extends HandlerInterceptorAdapter {
 
-	private Gson gson = new GsonBuilder()
-	.registerTypeHierarchyAdapter(GrantedAuthority.class, new JsonSerializer<GrantedAuthority>() {
-		@Override
-		public JsonElement serialize(GrantedAuthority src, Type typeOfSrc, JsonSerializationContext context) {
-			return new JsonPrimitive(src.getAuthority());
-		}
-	})
-	.create();
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(UserInfoInterceptor.class);
 
-	@Autowired (required = false)
+	private Gson gson = new GsonBuilder()
+			.registerTypeHierarchyAdapter(GrantedAuthority.class, new JsonSerializer<GrantedAuthority>() {
+				@Override
+				public JsonElement serialize(GrantedAuthority src, Type typeOfSrc, JsonSerializationContext context) {
+					return new JsonPrimitive(src.getAuthority());
+				}
+			}).create();
+
+	@Autowired(required = false)
 	private UserInfoService userInfoService;
-	
+
+	@Autowired
+	private UserConnectionService userConnectionService;
+
+	// @Autowired
+	// private ClientDetailsEntityService clientService;
+
 	private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		if (auth instanceof Authentication){
+		logger.info("Authenifcation " + auth.getClass().getName() + " " + request + request.getSession() + request.getSession().getAttribute("acr")
+				+ " ," + auth.isAuthenticated() + auth.getName() + auth.getDetails());
+
+		if (auth instanceof OAuth2Authentication) {
+			OAuth2Authentication o2a = (OAuth2Authentication) auth;
+			logger.info("Requests " + Joiner.on('\n').withKeyValueSeparator(" -> ")
+					.join(o2a.getOAuth2Request().getRequestParameters()));
+			String clientId = o2a.getOAuth2Request().getClientId();
+			String ownerId = o2a.getUserAuthentication().getName();
+			String userId = Long.toString(((DefaultUserInfo) userInfoService.getByUsername(ownerId)).getId());
+			userConnectionService.save(UserConnectionUtils.successfulConnection(userId, clientId,
+					o2a.getOAuth2Request().getRequestParameters().get("acr")));
+		}
+
+		if (auth instanceof Authentication) {
 			request.setAttribute("userAuthorities", gson.toJson(auth.getAuthorities()));
 		}
-		
-		if (!trustResolver.isAnonymous(auth)) { // skip lookup on anonymous logins
+
+		if (!trustResolver.isAnonymous(auth)) { // skip lookup on anonymous
+												// logins
 			if (auth instanceof OIDCAuthenticationToken) {
-				// if they're logging into this server from a remote OIDC server, pass through their user info
+				// if they're logging into this server from a remote OIDC
+				// server, pass through their user info
 				OIDCAuthenticationToken oidc = (OIDCAuthenticationToken) auth;
 				if (oidc.getUserInfo() != null) {
 					request.setAttribute("userInfo", oidc.getUserInfo());
@@ -85,12 +121,13 @@ public class UserInfoInterceptor extends HandlerInterceptorAdapter {
 					request.setAttribute("userInfoJson", "null");
 				}
 			} else {
-				// don't bother checking if we don't have a principal or a userInfoService to work with
+				// don't bother checking if we don't have a principal or a
+				// userInfoService to work with
 				if (auth != null && auth.getName() != null && userInfoService != null) {
-	
+
 					// try to look up a user based on the principal's name
 					UserInfo user = userInfoService.getByUsername(auth.getName());
-	
+
 					// if we have one, inject it so views can use it
 					if (user != null) {
 						request.setAttribute("userInfo", user);

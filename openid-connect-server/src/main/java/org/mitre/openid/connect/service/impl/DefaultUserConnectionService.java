@@ -1,25 +1,26 @@
 package org.mitre.openid.connect.service.impl;
 
+import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.mitre.oauth2.model.ClientDetailsEntity;
 import org.mitre.oauth2.service.ClientDetailsEntityService;
-import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserConnection;
 import org.mitre.openid.connect.repository.UserConnectionRepository;
 import org.mitre.openid.connect.service.UserConnectionService;
-import org.mitre.openid.connect.service.UserInfoService;
-import org.mitre.openid.connect.util.AcrEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
-import com.upcrob.springsecurity.otp.PreOtpAuthenticationToken;
+import com.google.common.base.Joiner;
+import com.sendgrid.Content;
+import com.sendgrid.Email;
+import com.sendgrid.Mail;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
 
 @Service
 public class DefaultUserConnectionService implements UserConnectionService {
@@ -28,10 +29,9 @@ public class DefaultUserConnectionService implements UserConnectionService {
 
 	@Autowired
 	private UserConnectionRepository userConnectionRepository;
+
 	@Autowired
-	private UserInfoService userInfoService;
-	@Autowired
-	private ClientDetailsEntityService clientService;
+	private ClientDetailsEntityService clientDetailsEntityService;
 
 	@Override
 	public Collection<UserConnection> getByClientId(String clientId) {
@@ -43,56 +43,37 @@ public class DefaultUserConnectionService implements UserConnectionService {
 		return userConnectionRepository.save(userConnection);
 	}
 
-	public boolean isLoggedBySMS(HttpServletRequest httpServletRequest) {
-		return httpServletRequest.getSession().getAttribute("acr") != null
-				&& ((String) httpServletRequest.getSession().getAttribute("acr")).contains(AcrEnum.SMS.getValue());
-	}
-
-	public Date successfulConnection(HttpServletRequest httpServletRequest, Authentication authentication) {
-
-		Date authTimestamp = new Date();
-		UserConnection userConnection = new UserConnection();
-		userConnection.setDate(authTimestamp);
-		userConnection.setUserId(getUserId(httpServletRequest, authentication));
-		userConnection.setClientId(getClientId(authentication));
-		userConnection.setConnectionType(isLoggedBySMS(httpServletRequest) ? UserConnection.ConnectionType.SMS
-				: UserConnection.ConnectionType.PWD);
-		save(userConnection);
-
-		return authTimestamp;
-	}
-
-	public Date failureConnection(HttpServletRequest httpServletRequest, Authentication authentication) {
-
-		Date authTimestamp = new Date();
-		UserConnection userConnection = new UserConnection();
-		userConnection.setDate(authTimestamp);
-		userConnection.setUserId(getUserId(httpServletRequest, authentication));
-		userConnection.setClientId(getClientId(authentication));
-		userConnection.setConnectionType(isLoggedBySMS(httpServletRequest) ? UserConnection.ConnectionType.SMS
-				: UserConnection.ConnectionType.PWD);
-		save(userConnection);
-
-		return authTimestamp;
-	}
-
-	private String getUserId(HttpServletRequest httpServletRequest, Authentication authentication) {
-
-		Object user = httpServletRequest.getAttribute("userInfo");
-		if (user != null && user instanceof DefaultUserInfo) {
-			return Long.toString(((DefaultUserInfo) user).getId());
+	@Override
+	public void sendUserConnectionByEmail() {
+		for (ClientDetailsEntity client : clientDetailsEntityService.getAllClients()) {
+			logger.info("Contacts " + Joiner.on('\n').join(client.getContacts()));
+			logger.info("User connection list " + Joiner.on('\n').join(getByClientId(client.getClientId())));
+			sendEmail("rambertmaurice@gmail.com");
 		}
-
-		// get user with auth.getName
-		return Long.toString(((DefaultUserInfo) userInfoService.getByUsername(authentication.getName())).getId());
 	}
 
-	private String getClientId(Authentication authentication) {
+	private void sendEmail(String emailTo) {
 
-		OAuth2Authentication o2a = (OAuth2Authentication) authentication;
-		String authClientId = o2a.getOAuth2Request().getClientId();
-		return clientService.loadClientByClientId(authClientId).getClientId();
+		Email from = new Email("contact@fiatope.com");
+		String subject = "User's login history";
+		Email to = new Email(emailTo);
+		Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+		Mail mail = new Mail(from, subject, to, content);
 
+		SendGrid sg = new SendGrid("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");
+		Request request = new Request();
+
+		try {
+			request.setMethod(Method.POST);
+			request.setEndpoint("mail/send");
+			request.setBody(mail.build());
+//			Response response = sg.api(request);
+//			logger.info("Status code : " + response.getStatusCode());
+//			logger.info("Body : " + response.getBody());
+//			logger.info("Headers : " + response.getHeaders());
+		} catch (IOException ex) {
+			logger.error("Error occured during sending email", ex);
+		}
 	}
 
 }

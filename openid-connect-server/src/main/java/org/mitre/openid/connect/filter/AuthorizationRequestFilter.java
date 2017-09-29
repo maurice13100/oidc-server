@@ -19,7 +19,16 @@
  */
 package org.mitre.openid.connect.filter;
 
-import static org.mitre.openid.connect.request.ConnectRequestParameters.*;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.ACR_VALUES;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.ERROR;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.LOGIN_HINT;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.LOGIN_REQUIRED;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.MAX_AGE;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_LOGIN;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_NONE;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.PROMPT_SEPARATOR;
+import static org.mitre.openid.connect.request.ConnectRequestParameters.STATE;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -58,6 +67,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.upcrob.springsecurity.otp.PreOtpAuthenticationToken;
 
 /**
  * @author jricher
@@ -85,20 +95,21 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 
 	@Autowired(required = false)
 	private LoginHintExtracter loginHintExtracter = new RemoveLoginHintsWithHTTP();
-	
+
 	private RequestMatcher requestMatcher = new AntPathRequestMatcher("/authorize");
 
 	/**
 	 * 
 	 */
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException {
 
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpSession session = request.getSession();
-		
-		logger.info("filtring ...");
+
+		logger.info("filtring 1 ...");
 
 		// skip everything that's not an authorize URL
 		if (!requestMatcher.matches(request)) {
@@ -106,8 +117,19 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 			return;
 		}
 
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth != null && auth instanceof PreOtpAuthenticationToken) {
+			logger.info("PreOtpAuthenticationToken");
+			response.sendRedirect("/otpentry");
+			return;
+		}
+
+		logger.info("filtring 2 ...");
+
 		try {
-			// we have to create our own auth request in order to get at all the parameters appropriately
+			// we have to create our own auth request in order to get at all the
+			// parameters appropriately
 			AuthorizationRequest authRequest = null;
 
 			ClientDetailsEntity client = null;
@@ -132,20 +154,21 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 
 			if (authRequest.getExtensions().get(PROMPT) != null) {
 				// we have a "prompt" parameter
-				String prompt = (String)authRequest.getExtensions().get(PROMPT);
+				String prompt = (String) authRequest.getExtensions().get(PROMPT);
 				List<String> prompts = Splitter.on(PROMPT_SEPARATOR).splitToList(Strings.nullToEmpty(prompt));
 
 				if (prompts.contains(PROMPT_NONE)) {
 					// see if the user's logged in
-					Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 					if (auth != null) {
 						// user's been logged in already (by session management)
 						// we're OK, continue without prompting
 						chain.doFilter(req, res);
 					} else {
+
 						logger.info("Client requested no prompt");
-						// user hasn't been logged in, we need to "return an error"
+						// user hasn't been logged in, we need to "return an
+						// error"
 						if (client != null && authRequest.getRedirectUri() != null) {
 
 							// if we've got a redirect URI then we'll send it
@@ -157,7 +180,14 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 
 								uriBuilder.addParameter(ERROR, LOGIN_REQUIRED);
 								if (!Strings.isNullOrEmpty(authRequest.getState())) {
-									uriBuilder.addParameter(STATE, authRequest.getState()); // copy the state parameter if one was given
+									uriBuilder.addParameter(STATE, authRequest.getState()); // copy
+																							// the
+																							// state
+																							// parameter
+																							// if
+																							// one
+																							// was
+																							// given
 								}
 
 								response.sendRedirect(uriBuilder.toString());
@@ -175,21 +205,23 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 					}
 				} else if (prompts.contains(PROMPT_LOGIN)) {
 
-					// first see if the user's already been prompted in this session
+					// first see if the user's already been prompted in this
+					// session
 					if (session.getAttribute(PROMPTED) == null) {
 						// user hasn't been PROMPTED yet, we need to check
 
 						session.setAttribute(PROMPT_REQUESTED, Boolean.TRUE);
 
 						// see if the user's logged in
-						Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 						if (auth != null) {
-							// user's been logged in already (by session management)
+							// user's been logged in already (by session
+							// management)
 							// log them out and continue
 							SecurityContextHolder.getContext().setAuthentication(null);
 							chain.doFilter(req, res);
 						} else {
-							// user hasn't been logged in yet, we can keep going since we'll get there
+							// user hasn't been logged in yet, we can keep going
+							// since we'll get there
 							chain.doFilter(req, res);
 						}
 					} else {
@@ -200,14 +232,16 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 						chain.doFilter(req, res);
 					}
 				} else {
-					// prompt parameter is a value we don't care about, not our business
+					// prompt parameter is a value we don't care about, not our
+					// business
 					chain.doFilter(req, res);
 				}
 
-			} else if (authRequest.getExtensions().get(MAX_AGE) != null ||
-					(client != null && client.getDefaultMaxAge() != null)) {
+			} else if (authRequest.getExtensions().get(MAX_AGE) != null
+					|| (client != null && client.getDefaultMaxAge() != null)) {
 
-				// default to the client's stored value, check the string parameter
+				// default to the client's stored value, check the string
+				// parameter
 				Integer max = (client != null ? client.getDefaultMaxAge() : null);
 				String maxAge = (String) authRequest.getExtensions().get(MAX_AGE);
 				if (maxAge != null) {
@@ -234,7 +268,9 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 			}
 
 		} catch (InvalidClientException e) {
-			// we couldn't find the client, move on and let the rest of the system catch the error
+			logger.error("we couldn't find the client, move on and let the rest of the system catch the error", e);
+			// we couldn't find the client, move on and let the rest of the
+			// system catch the error
 			chain.doFilter(req, res);
 		}
 	}
@@ -248,7 +284,8 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 		for (String key : parameterMap.keySet()) {
 			String[] val = parameterMap.get(key);
 			if (val != null && val.length > 0) {
-				requestMap.put(key, val[0]); // add the first value only (which is what Spring seems to do)
+				requestMap.put(key, val[0]); // add the first value only (which
+												// is what Spring seems to do)
 			}
 		}
 
@@ -263,7 +300,8 @@ public class AuthorizationRequestFilter extends GenericFilterBean {
 	}
 
 	/**
-	 * @param requestMatcher the requestMatcher to set
+	 * @param requestMatcher
+	 *            the requestMatcher to set
 	 */
 	public void setRequestMatcher(RequestMatcher requestMatcher) {
 		this.requestMatcher = requestMatcher;

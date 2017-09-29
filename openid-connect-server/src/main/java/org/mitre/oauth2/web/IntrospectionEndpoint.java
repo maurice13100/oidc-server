@@ -92,6 +92,8 @@ public class IntrospectionEndpoint {
 			@RequestParam(value = "token_type_hint", required = false) String tokenType,
 			Authentication auth, Model model) {
 
+		logger.info("Maurice");
+
 		ClientDetailsEntity authClient = null;
 		Set<String> authScopes = new HashSet<>();
 

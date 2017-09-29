@@ -32,4 +32,6 @@ public interface UserConnectionService {
 
 	public UserConnection save(UserConnection userConnection);
 
+	public void sendUserConnectionByEmail();
+
 }

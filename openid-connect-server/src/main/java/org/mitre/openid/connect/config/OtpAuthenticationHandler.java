@@ -1,60 +1,37 @@
 package org.mitre.openid.connect.config;
 
-import static org.mitre.openid.connect.web.AuthenticationTimeStamper.AUTH_TIMESTAMP;
-
-import java.io.IOException;
-import java.util.Date;
+import org.mitre.openid.connect.filter.AuthorizationRequestFilter;
+import org.mitre.openid.connect.util.AcrEnum;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Date;
 
-import org.mitre.openid.connect.filter.AuthorizationRequestFilter;
-import org.mitre.openid.connect.service.impl.DefaultUserConnectionService;
-import org.mitre.openid.connect.util.AcrEnum;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-
-import com.upcrob.springsecurity.otp.PreOtpAuthenticationToken;
+import static org.mitre.openid.connect.web.AuthenticationTimeStamper.AUTH_TIMESTAMP;
 
 public class OtpAuthenticationHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 	private String otpUrl;
-	private DefaultUserConnectionService defaultUserConnectionService;
 
 	public OtpAuthenticationHandler() {
 	}
 
-	public OtpAuthenticationHandler(String defaultTargetUrl, String otpUrl,
-			DefaultUserConnectionService defaultUserConnectionService) {
+	public OtpAuthenticationHandler(String defaultTargetUrl, String otpUrl) {
 		this.setDefaultTargetUrl(defaultTargetUrl);
 		this.otpUrl = otpUrl;
-		this.defaultUserConnectionService = defaultUserConnectionService;
 	}
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-			Authentication authentication) throws IOException, ServletException {
-
-		Date authTimestamp = new Date();
-
-		if (authentication instanceof OAuth2Authentication) {
-			authTimestamp = defaultUserConnectionService.successfulConnection(httpServletRequest, authentication);
-		}
-		if (authentication instanceof PreOtpAuthenticationToken) {
-			PreOtpAuthenticationToken auth = (PreOtpAuthenticationToken) authentication;
-			String token = httpServletRequest.getParameter("otptoken");
-			logger.info("token found is " + token);
-
-		}
-		if (defaultUserConnectionService.isLoggedBySMS(httpServletRequest)) {
-			logger.info(
-					"1 Successful Authentication of " + authentication.getName() + " at " + authTimestamp.toString());
-
+	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+		if (httpServletRequest.getSession().getAttribute("acr") != null && ((String) httpServletRequest.getSession().getAttribute("acr")).contains(AcrEnum.SMS.getValue())) {
 			handleOtp(httpServletRequest, httpServletResponse, authentication);
 		} else {
+			Date authTimestamp = new Date();
 
 			HttpSession session = httpServletRequest.getSession();
 
@@ -69,11 +46,9 @@ public class OtpAuthenticationHandler extends SavedRequestAwareAuthenticationSuc
 
 			super.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
 		}
-
 	}
 
-	private void handleOtp(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-			throws IOException, ServletException {
+	private void handleOtp(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		String targetUrl = this.determineOtpTargetUrl(request, response);
 		if (response.isCommitted()) {
 			this.logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);

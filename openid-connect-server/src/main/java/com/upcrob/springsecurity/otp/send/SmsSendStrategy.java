@@ -32,12 +32,13 @@ public class SmsSendStrategy implements SendStrategy {
 
 	private static final String URL = "http://41.74.172.132:8080/SMSServiceProvider/sendSMS";
 	private static final String SOURCE = "FIATOP";
-	private static final String CONTRACT_ID = "4210326361";
+	private static final String CONTRACT_ID = "127433452";
 
 	private static final Logger logger = LoggerFactory.getLogger(SmsSendStrategy.class);
 
-	private EmailSendStrategy emailSendStrategy = new EmailSendStrategy("smtp.gmail.com", 587,
-			"rambertmaurice@gmail.com");
+	// private EmailSendStrategy emailSendStrategy = new
+	// EmailSendStrategy("smtp.gmail.com", 587,
+	// "rambertmaurice@gmail.com");
 
 	/*
 	 * (non-Javadoc)
@@ -48,11 +49,12 @@ public class SmsSendStrategy implements SendStrategy {
 	 */
 	@Override
 	public void send(String token, String phoneNumber) {
-		emailSendStrategy.setUseTls(true);
-		emailSendStrategy.setUsername("rambertmaurice@gmail.com");
-		emailSendStrategy.setPassword("Ilove,om13100/");
-//		emailSendStrategy.send("Your connection's token is " + token + " . Enter it to login",
-				//"rambertmaurice@gmail.com");
+		// emailSendStrategy.setUseTls(true);
+		// emailSendStrategy.setUsername("rambertmaurice@gmail.com");
+		// emailSendStrategy.setPassword("Ilove,om13100/");
+		// emailSendStrategy.send("Your connection's token is " + token + " .
+		// Enter it to login",
+		// "rambertmaurice@gmail.com");
 		//sendSms("Your connection's token is " + token + " . Enter it to login", phoneNumber);
 	}
 

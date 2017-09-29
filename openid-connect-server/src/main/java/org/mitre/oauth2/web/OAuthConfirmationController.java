@@ -104,6 +104,8 @@ public class OAuthConfirmationController {
 	public String confimAccess(Map<String, Object> model,
 			@ModelAttribute("authorizationRequest") AuthorizationRequest authRequest, Principal p) {
 
+		logger.info("Maurice");
+
 		// Check the "prompt" parameter to see if we need to do special
 		// processing
 

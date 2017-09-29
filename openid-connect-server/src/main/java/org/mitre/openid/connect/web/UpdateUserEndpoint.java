@@ -149,21 +149,21 @@ public class UpdateUserEndpoint {
 			address.setStreetAddress(userDTO.getStreetAddress());
 			isEmptyOrNull = false;
 		}
-		if (StringUtils.isNotBlank(userDTO.getStreetAddress())) {
+		if (StringUtils.isNotBlank(userDTO.getLocality())) {
 			address.setLocality(userDTO.getLocality());
 			isEmptyOrNull = false;
 		}
 
-		if (StringUtils.isNotBlank(userDTO.getStreetAddress())) {
+		if (StringUtils.isNotBlank(userDTO.getRegion())) {
 			address.setRegion(userDTO.getRegion());
 			isEmptyOrNull = false;
 		}
 
-		if (StringUtils.isNotBlank(userDTO.getStreetAddress())) {
+		if (StringUtils.isNotBlank(userDTO.getPostalCode())) {
 			address.setPostalCode(userDTO.getPostalCode());
 			isEmptyOrNull = false;
 		}
-		if (StringUtils.isNotBlank(userDTO.getStreetAddress())) {
+		if (StringUtils.isNotBlank(userDTO.getCountry())) {
 			address.setCountry(userDTO.getCountry());
 			isEmptyOrNull = false;
 		}
