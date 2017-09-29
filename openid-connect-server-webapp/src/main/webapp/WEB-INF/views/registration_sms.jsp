@@ -25,7 +25,7 @@
 
     <div class="row-fluid">
         <div class="text-center">
-            <h3>Registration</h3>
+            <h3><spring:message code="login.login_with_phone"/></h3>
         </div>
     </div>
 
@@ -38,7 +38,7 @@
         <div class="span3 well custom-card">
             <img src="resources/images/user.jpg" class="img-circle custom-image">
 
-            <form action="${ config.issuer }${ config.issuer.endsWith('/') ? '' : '/' }j_spring_security_check?connectionType=SMS" method="POST">
+            <form action="${ config.issuer }${ config.issuer.endsWith('/') ? '' : '/' }j_spring_security_check" method="POST">
                 <div>
                     <div class="input-prepend input-block-level custom-field">
                         <span class="add-on"><i class="icon-user"></i></span>
@@ -55,7 +55,7 @@
 
     <div class="row-fluid">
         <div class="span2 custom-center text-center create-account">
-            <a href="/login_sms">Log in</a>
+            <a href="/registration">Log in</a>
         </div>
     </div>
 </div>

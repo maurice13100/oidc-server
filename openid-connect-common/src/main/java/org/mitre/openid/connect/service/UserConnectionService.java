@@ -14,46 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package org.mitre.openid.connect.repository;
+package org.mitre.openid.connect.service;
 
-import org.mitre.openid.connect.model.DefaultUserInfo;
-import org.mitre.openid.connect.model.UserInfo;
+import java.util.Collection;
+
+import org.mitre.openid.connect.model.UserConnection;
 
 /**
- * UserInfo repository interface
+ * Interface for UserInfo service
  * 
  * @author Michael Joseph Walsh
- *
+ * 
  */
-public interface UserInfoRepository {
+public interface UserConnectionService {
 
-	/**
-	 * Get a UserInfo object by its preferred_username field
-	 * @param username
-	 * @return
-	 */
-	public UserInfo getByUsername(String username);
+	public Collection<UserConnection> getByClientId(String clientId);
 
-	/**
-	 * 
-	 * Get the UserInfo object by its email field
-	 * 
-	 * @param email
-	 * @return
-	 */
-	public UserInfo getByEmailAddress(String email);
+	public UserConnection save(UserConnection userConnection);
 
-	/**
-	 *
-	 * Get the UserInfo object by its phone number field
-	 *
-	 * @param phoneNumber
-	 * @return
-	 */
-	public UserInfo getByPhoneNumber(String phoneNumber);
-
-	public UserInfo registerNewUser(UserInfo newUser);
-	
-	public UserInfo updateUser(DefaultUserInfo userToUpdate);
+	public void sendUserConnectionByEmail();
 
 }

@@ -32,9 +32,6 @@ if (request.getAttribute("error") != null && request.getAttribute("error") insta
 	<div class="row-fluid">
 		<div class="offset1 span10">
 			<div class="hero-unit">
-				<h1><span><spring:message code="error.header"/></span>
-					<span class="text-error"><c:out value="${ errorCode }" /></span>
-				</h1>
 				<p>
 					<spring:message code="error.message"/>
 					<blockquote class="text-error"><b><c:out value="${ message }" /></b></blockquote>

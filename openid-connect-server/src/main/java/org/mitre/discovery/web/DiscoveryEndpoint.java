@@ -29,6 +29,7 @@ import org.mitre.oauth2.service.SystemScopeService;
 import org.mitre.oauth2.web.IntrospectionEndpoint;
 import org.mitre.oauth2.web.RevocationEndpoint;
 import org.mitre.openid.connect.config.ConfigurationPropertiesBean;
+import org.mitre.openid.connect.filter.AuthorizationRequestFilter;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.UserInfoService;
 import org.mitre.openid.connect.view.HttpCodeView;
@@ -88,6 +89,7 @@ public class DiscoveryEndpoint {
 
 	@Autowired
 	private UserInfoService userService;
+	
 
 
 	// used to map JWA algorithms objects to strings
@@ -163,6 +165,8 @@ public class DiscoveryEndpoint {
 
 	@RequestMapping("/" + OPENID_CONFIGURATION_URL)
 	public String providerConfiguration(Model model) {
+
+		logger.info("coucou");
 
 		/*
 		    issuer

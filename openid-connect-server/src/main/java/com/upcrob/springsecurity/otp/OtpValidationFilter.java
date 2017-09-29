@@ -98,7 +98,7 @@ public class OtpValidationFilter extends OncePerRequestFilter {
 
 		} else {
 			SecurityContextHolder.getContext().setAuthentication(null);
-			response.sendRedirect(failureUrl);
+			response.sendRedirect("login_sms?error");
 		}
 	}
 }

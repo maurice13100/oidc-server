@@ -16,7 +16,10 @@
             "claim": "Claim name:",
             "show": "View User Profile",
             "text": "Your user profile has the following information:",
-            "value": "Claim value:"
+            "value": "Claim value:",
+            "edit" : "Edit profile information",
+            "manage" : "Manage Profile Information",
+            "title" : "User Profile"
         }
     },
     "client": {
@@ -450,7 +453,7 @@
 			"title": "Personal",
 			"approved_sites": "Manage Approved Sites",
 			"active_tokens": "Manage Active Tokens",
-			"profile_information": "View Profile Information"
+			"profile_information": "Manage Profile Information"
 		},
 		"developer": {
 			"title": "Developer",
@@ -469,7 +472,7 @@
 		"error": {
 			"not_granted": "Access could not be granted."
 		},
-		"required_for": "Approval Required for",
+		"required_for": "Do you authorize {0} to access the information ?",
 		"dynamically_registered": "This client was dynamically registered <span class=\"label label-info\" id=\"registrationTime\">{0}</span>.",
 		"caution": {
 			"title": "Caution",

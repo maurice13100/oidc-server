@@ -10,12 +10,18 @@ public interface UserService {
 
 	/**
 	 * Register a new user
-	 * @param newUser the new user
+	 * 
+	 * @param newUser
+	 *            the new user
 	 * @return the created user
 	 */
 	public User registerNewUser(User newUser);
 
 	public Authority retrieveUserFromUsername(String username);
 
+	public User retrieveExistantUserFromUsername(String username);
+
 	public Authority registerUserAuthority(Authority authority);
+
+	public User updateUser(User userToUpdate);
 }

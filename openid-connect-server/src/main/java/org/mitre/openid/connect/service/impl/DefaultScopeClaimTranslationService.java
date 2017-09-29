@@ -17,14 +17,12 @@
 package org.mitre.openid.connect.service.impl;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.mitre.openid.connect.service.ScopeClaimTranslationService;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 
 /**
@@ -68,8 +66,11 @@ public class DefaultScopeClaimTranslationService implements ScopeClaimTranslatio
 		scopesToClaims.put("address", "address");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#getClaimsForScope(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#
+	 * getClaimsForScope(java.lang.String)
 	 */
 	@Override
 	public Set<String> getClaimsForScope(String scope) {
@@ -80,8 +81,11 @@ public class DefaultScopeClaimTranslationService implements ScopeClaimTranslatio
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#getClaimsForScopeSet(java.util.Set)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mitre.openid.connect.service.ScopeClaimTranslationService#
+	 * getClaimsForScopeSet(java.util.Set)
 	 */
 	@Override
 	public Set<String> getClaimsForScopeSet(Set<String> scopes) {

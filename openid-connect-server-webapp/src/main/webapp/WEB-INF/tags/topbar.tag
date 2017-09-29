@@ -68,7 +68,7 @@
 							<a id="registrationButton" href="registration" data-toggle="collapse" data-target=".nav-collapse"><i class="icon-pencil icon-white"></i> <spring:message code="topbar.registration"/></a>
 						</li>
 						<li>
-	                    	<a id="loginButton" href="login" data-toggle="collapse" data-target=".nav-Ncollapse"><i class="icon-lock icon-white"></i> <spring:message code="topbar.login"/></a>
+	                    	<a id="loginButton" href="login_sms" data-toggle="collapse" data-target=".nav-Ncollapse"><i class="icon-lock icon-white"></i> <spring:message code="topbar.login"/></a>
 	                    </li>
 	                    </security:authorize>
 	                </ul>

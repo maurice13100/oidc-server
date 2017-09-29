@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import static org.mitre.util.jpa.JpaUtil.saveOrUpdate;
 
 @Repository("jpaUserRepository")
 public class JpaUserRepository implements UserRepository {
@@ -46,6 +47,21 @@ public class JpaUserRepository implements UserRepository {
 	@Transactional(value = "defaultTransactionManager", readOnly = true)
 	public Authority getUserAuthorityFromUsername(String username) {
 		TypedQuery<Authority> query = entityManager.createNamedQuery(Authority.QUERY_BY_NAME, Authority.class);
+		query.setParameter("username", username);
+
+		return query.getSingleResult();
+	}
+
+	@Override
+	@Transactional(value = "defaultTransactionManager")
+	public User update(User user) {
+		return saveOrUpdate(user.getUsername(), entityManager, user);
+	}
+
+	@Override
+	@Transactional(value = "defaultTransactionManager", readOnly = true)
+	public User findByUsername(String username) {
+		TypedQuery<User> query = entityManager.createNamedQuery(User.QUERY_BY_NAME, User.class);
 		query.setParameter("username", username);
 
 		return query.getSingleResult();

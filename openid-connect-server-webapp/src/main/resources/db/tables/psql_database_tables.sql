@@ -367,3 +367,13 @@ CREATE INDEX ts_oi_idx ON token_scope(owner_id);
 CREATE INDEX at_exp_idx ON access_token(expiration);
 CREATE INDEX rf_ahi_idx ON refresh_token(auth_holder_id);
 CREATE INDEX cd_ci_idx ON client_details(client_id);
+
+CREATE TABLE IF NOT EXISTS user_connections (
+	id SERIAL PRIMARY KEY,
+	date TIMESTAMP NULL,
+	user_id VARCHAR(256),
+	client_id VARCHAR(256),
+	connectionType VARCHAR(256),
+	success BOOLEAN,
+	sentSms BOOLEAN
+);

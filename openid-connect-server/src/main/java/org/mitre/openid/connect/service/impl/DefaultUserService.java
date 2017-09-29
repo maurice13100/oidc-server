@@ -31,4 +31,14 @@ public class DefaultUserService implements UserService {
 	public Authority registerUserAuthority(Authority authority) {
 		return userRepository.registerRole(authority);
 	}
+
+	@Override
+	public User updateUser(User userToUpdate) {
+		return userRepository.update(userToUpdate);
+	}
+
+	@Override
+	public User retrieveExistantUserFromUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 }

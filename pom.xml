@@ -146,10 +146,8 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<version>1.1.4</version>
 				<configuration>
-
 					<appName>x-connect</appName>
-					<warFile>/home/mrambert/Desktop/maurice/oidc-server/openid-connect-server-webapp/target/openid-connect-server-webapp.war</warFile>
-
+					<warFile>../openid-connect-server-webapp/target/openid-connect-server-webapp.war</warFile>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -534,7 +532,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
-				<version>4.3.6</version>
+				<version>4.5.2</version>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>

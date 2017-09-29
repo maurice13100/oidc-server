@@ -5,8 +5,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@NamedQueries({ @NamedQuery(name = User.QUERY_BY_NAME, query = "select u from User u where u.username = :username") })
 public class User {
-	@Id @Column(name = "username")
+	@Id
+	@Column(name = "username")
 	private String username;
 	@Column(name = "password")
 	private String password;
@@ -14,6 +16,8 @@ public class User {
 	private boolean enabled;
 	@OneToMany(mappedBy = "user")
 	private Set<Authority> authorities;
+
+	public static final String QUERY_BY_NAME = "User.getByUsername";
 
 	public User() {
 	}
@@ -52,14 +56,19 @@ public class User {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		User user = (User) o;
 
-		if (enabled != user.enabled) return false;
-		if (username != null ? !username.equals(user.username) : user.username != null) return false;
-		if (password != null ? !password.equals(user.password) : user.password != null) return false;
+		if (enabled != user.enabled)
+			return false;
+		if (username != null ? !username.equals(user.username) : user.username != null)
+			return false;
+		if (password != null ? !password.equals(user.password) : user.password != null)
+			return false;
 		return authorities != null ? authorities.equals(user.authorities) : user.authorities == null;
 
 	}
@@ -75,8 +84,6 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User{" +
-			"username='" + username + '\'' +
-			'}';
+		return "User{" + "username='" + username + '\'' + '}';
 	}
 }

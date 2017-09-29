@@ -52,6 +52,15 @@ public class SmsUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
+
+		String value = request.getParameter("connectionType");
+		logger.info(value);
+		if (value != null && value.contains("SMS")) {
+			request.getSession().setAttribute(ACR_VALUES, value);		
+			super.doFilter(req, res, chain);
+			return;
+		}
+
 		String acr_value = (String) request.getSession().getAttribute(ACR_VALUES);
 		if (acr_value == null) {
 			setValueInSession(request, AMR, AMR_PWD);

@@ -11,4 +11,6 @@ public interface UserRepository {
 	public User registerUser(User user);
 	public Authority registerRole(Authority authority);
 	public Authority getUserAuthorityFromUsername(String username);
+	public User update(User user);
+	public User findByUsername(String username);
 }

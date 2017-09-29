@@ -15,6 +15,8 @@
  * limitations under the License.
  *******************************************************************************/
 
+
+
 Backbone.Model.prototype.fetchIfNeeded = function(options) {
 	var _self = this;
 	if (!options) {
@@ -305,6 +307,133 @@ var StatsModel = Backbone.Model.extend({
 	url: "api/stats/byclientid"
 });
 
+function showError(message){
+    $('#loadingbox').sheet('hide');
+        
+    $('#modalAlert').i18n();
+    $('#modalAlert div.modal-header').html("Error");
+    $('#modalAlert .modal-body').html(message);
+
+    $('#modalAlert').modal({
+        'backdrop': 'static',
+        'keyboard': true,
+        'show': true
+    });
+}
+
+var UpdateUserProfileModel = Backbone.Model.extend({
+
+    defaults:{
+        userName:null,
+        givenName:null,
+        familyName:null,
+        middleName:null,
+        gender:null,
+        birthDate:null,
+        streetAddress:null,
+        locality:null,
+        region:null,
+        postalCode:null,
+        country:null,
+        email:null,
+        phoneNumber:null,
+        password:null,
+        matchingPassword:null
+    },
+    urlRoot: 'api/updateuser', 
+
+    validate: function(attrs) {
+        if (attrs.password != attrs.matchingPassword) {
+            showError('Password confirmation and Password must match.');
+            return true;
+        }
+
+        return false;
+    }
+
+});
+
+
+// User Profile
+var EditUserProfileView = Backbone.View.extend({
+
+    tagName: 'tr',
+    
+    initialize:function (options) {
+        this.options = options;
+
+        if (!this.template) {
+            this.template = _.template($('#tmpl-user-profile-from').html());
+        }
+
+        //this.model.bind('change', this.render, this);
+    },
+    
+    events:{
+        'click .btn-save':'saveProfile',
+        'click .btn-edit':'editProfile',
+        'click .btn-cancel':'cancelProfile' 
+    },
+    
+    editProfile:function (e) {
+        e.preventDefault();
+        app.navigate('user/profile/edit', {trigger: true});
+    },
+
+    saveProfile:function(e) {
+        e.preventDefault();
+
+        this.model = new UpdateUserProfileModel();
+        
+        var email = $('#email input').val();
+        
+        if (email == null || email.trim() == "") {
+            return false;
+        }
+        
+        var valid = this.model.set({
+            email:email,
+            userName:'',
+            givenName:$('#given_name input').val(),
+            familyName:$('#family_name input').val(),
+            middleName:$('#middle_name input').val(),
+            gender:$('#given_name input').val(),
+            birthDate:$('#birthdate input').val(),
+            streetAddress:$('#street_address input').val(),
+            locality:$('#locality input').val(),
+            region:$('#region input').val(),
+            postalCode:$('#postal_code input').val(),
+            country:$('#country input').val(),
+            password:$('#newPassword input').val(),
+            matchingPassword:$('#newMatchingPassword input').val()
+        });
+        
+        if (valid) {
+            
+            var _self = this;
+            this.model.save({}, {
+                success:function() {
+                    app.navigate('user/profile', {trigger: true});
+                },
+                error:app.errorHandlerView.handleError()
+            });
+        }
+
+        return false;
+    },
+
+    cancelProfile : function() {
+        app.navigate('user/profile', {trigger: true}); 
+    },
+    
+    render:function (eventName) {
+        this.$el.html(this.template(getUserInfo()));//this.model.toJSON());
+        return this;
+        $(this.el).i18n();
+    }
+
+});
+
 // User Profile
 
 var UserProfileView = Backbone.View.extend({
@@ -316,6 +445,15 @@ var UserProfileView = Backbone.View.extend({
             this.template = _.template($('#tmpl-user-profile-element').html());
         }
 	},
+
+    events:{
+        "click .btn-edit":"editProfile"
+    },
+
+    editProfile:function (e) {
+        e.preventDefault();
+        app.navigate('user/profile/edit', {trigger: true});
+    },
 	
 	render:function() {
 		
@@ -325,6 +463,36 @@ var UserProfileView = Backbone.View.extend({
 
         _.each(this.model, function (value, key) {
         	if (key && value) {
+
+                if(key == 'name'){
+                    return;
+                }
+
+                if(key == 'gender'){
+                    return;
+                }
+
+                if(key == 'preferred_username'){
+                    key = 'Username';
+                }
+
+                if(key == 'phone_number'){
+                    key = 'Phone number';
+                }
+
+                if(key == 'given_name'){
+                    key = 'Given name';
+                }
+
+                if(key == 'family_name'){
+                    key = 'Family name';
+                }
+
+                if(key == 'middle_name'){
+                    return;
+                }
+
+                key = key.charAt(0).toUpperCase() + key.slice(1)
         		
         		if (typeof(value) === 'object') {
         			
@@ -332,9 +500,12 @@ var UserProfileView = Backbone.View.extend({
         			var k = key;
         			
         			_.each(value, function (value, key) {
-        				$('dl', el).append(
-       	            		t({key: key, value: value, category: k})
-        				);
+                        if(value) 
+                        {
+        				    $('dl', el).append(
+       	            		  t({key: key, value: value, category: k})
+        				    );
+                        }
         			});
         		} else if (typeof(value) === 'array') {
         			// TODO: handle array types
@@ -348,7 +519,12 @@ var UserProfileView = Backbone.View.extend({
 		
         $(this.el).i18n();
 		return this;
-	}
+	}, 
+    
+    load:function(callback) {
+        callback();
+
+    }
 });
 
 // error handler
@@ -432,7 +608,8 @@ var AppRouter = Backbone.Router.extend({
         "user/approved":"approvedSites",
         "user/tokens":"tokens",
         "user/profile":"profile",
-        
+        "user/profile/edit":"editProfile",
+
         "dev/dynreg":"dynReg",
         "dev/dynreg/new":"newDynReg",
         "dev/dynreg/edit":"editDynReg",
@@ -1037,16 +1214,37 @@ var AppRouter = Backbone.Router.extend({
     	this.breadCrumbView.collection.reset();
     	this.breadCrumbView.collection.add([
              {text:$.t('admin.home'), href:""},
-             {text:$.t('admin.user-profile.show'), href:"manage/#user/profile"}
-        ]);
+             {text:$.t('admin.user-profile.title'), href:"manage/#user/profile"}
+            ]);
     
         this.updateSidebar('user/profile');
         
     	var view = new UserProfileView({model: getUserInfo()});
-    	$('#content').html(view.render().el);
+
+         view.load(function() {
+            this.model =  getUserInfo();
+            $('#content').html(view.render().el);
+            setPageTitle($.t('admin.user-profile.show'));
+         });
+
     	
-    	setPageTitle($.t('admin.user-profile.show'));
-    	
+    },
+
+    editProfile:function() {
+        this.breadCrumbView.collection.reset();
+        this.breadCrumbView.collection.add([
+             {text:$.t('admin.home'), href:""},
+             {text:$.t('admin.user-profile.title'), href:"manage/#user/profile"},
+             {text:$.t('admin.user-profile.edit'), href:"manage/#user/profile/edit"}
+        ]);
+    
+        this.updateSidebar('user/profile');
+        
+        var view = new EditUserProfileView({model: getUserInfo()});
+        $('#content').html(view.render().el);
+        
+        setPageTitle($.t('admin.user-profile.edit'));
+        
     },
     
     updateSidebar:function(item) {

@@ -16,44 +16,33 @@
  *******************************************************************************/
 package org.mitre.openid.connect.repository;
 
-import org.mitre.openid.connect.model.DefaultUserInfo;
-import org.mitre.openid.connect.model.UserInfo;
+import java.util.Collection;
+
+import org.mitre.openid.connect.model.UserConnection;
 
 /**
- * UserInfo repository interface
+ * UserConnection repository interface
  * 
- * @author Michael Joseph Walsh
- *
+ * @author mrambert
+ * 
  */
-public interface UserInfoRepository {
+public interface UserConnectionRepository {
 
 	/**
-	 * Get a UserInfo object by its preferred_username field
-	 * @param username
-	 * @return
-	 */
-	public UserInfo getByUsername(String username);
-
-	/**
+	 * Find connections by its associated ClientDetails reference
 	 * 
-	 * Get the UserInfo object by its email field
-	 * 
-	 * @param email
-	 * @return
+	 * @param client
+	 *            the Relying Party
+	 * @return the user connections
 	 */
-	public UserInfo getByEmailAddress(String email);
+	public Collection<UserConnection> getByClientId(String clientId);
 
 	/**
-	 *
-	 * Get the UserInfo object by its phone number field
-	 *
-	 * @param phoneNumber
+	 * Persists a UserConnection
+	 * 
+	 * @param userConnection
 	 * @return
 	 */
-	public UserInfo getByPhoneNumber(String phoneNumber);
-
-	public UserInfo registerNewUser(UserInfo newUser);
-	
-	public UserInfo updateUser(DefaultUserInfo userToUpdate);
+	public UserConnection save(UserConnection userConnection);
 
 }

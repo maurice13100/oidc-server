@@ -21,6 +21,7 @@ import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.repository.UserInfoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import static org.mitre.util.jpa.JpaUtil.saveOrUpdate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -83,5 +84,16 @@ public class JpaUserInfoRepository implements UserInfoRepository {
 		manager.flush();
 
 		return newUser;
+	}
+
+	@Override
+	@Transactional(value = "defaultTransactionManager")
+	public UserInfo updateUser(DefaultUserInfo userToUpdate) {
+		//manager.merge(userToUpdate);
+		//manager.flush();
+		
+		saveOrUpdate(userToUpdate.getId(), manager, userToUpdate);
+
+		return userToUpdate;
 	}
 }
