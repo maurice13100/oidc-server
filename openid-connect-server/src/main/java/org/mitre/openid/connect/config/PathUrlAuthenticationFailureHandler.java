@@ -47,6 +47,6 @@ public class PathUrlAuthenticationFailureHandler extends SimpleUrlAuthentication
 		if (referer.equals(LOGIN_SMS)) {
 			return LOGIN_SMS + "?error=failure";
 		}
-		return "login?error=failure";
+		return "/login?error=failure";
 	}
 }
