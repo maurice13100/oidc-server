@@ -31,7 +31,7 @@
 
 	<beans profile="prod,default">
 		<bean id="configBean" class="org.mitre.openid.connect.config.ConfigurationPropertiesBean">
-			<property name="issuer" value="https://sms-xconnect.herokuapp.com/" />
+			<property name="issuer" value="https://x-connect.herokuapp.com/" />
 			<property name="logoImageUrl" value="resources/images/openid_connect_small.png" />
 			<property name="topbarTitle" value="X-Connect" />
 
