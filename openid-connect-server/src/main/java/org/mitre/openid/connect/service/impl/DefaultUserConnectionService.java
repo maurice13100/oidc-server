@@ -46,8 +46,8 @@ public class DefaultUserConnectionService implements UserConnectionService {
 	@Override
 	public void sendUserConnectionByEmail() {
 		for (ClientDetailsEntity client : clientDetailsEntityService.getAllClients()) {
-			logger.info("Contacts " + Joiner.on('\n').join(client.getContacts()));
-			logger.info("User connection list " + Joiner.on('\n').join(getByClientId(client.getClientId())));
+			//logger.info("Contacts " + Joiner.on('\n').join(client.getContacts()));
+			//logger.info("User connection list " + Joiner.on('\n').join(getByClientId(client.getClientId())));
 			sendEmail("rambertmaurice@gmail.com");
 		}
 	}
