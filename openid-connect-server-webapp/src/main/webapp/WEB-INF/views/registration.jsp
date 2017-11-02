@@ -19,13 +19,13 @@
 
     <div class="row-fluid">
         <div class="span3 custom-center ">
-            <h1 class="banner"><a href="home">X-CONNECT</a></h1>
+            <h1 class="banner"><a href="home">XConnect</a></h1>
         </div>
     </div>
 
     <div class="row-fluid">
         <div class="text-center">
-            <h3>Registration</h3>
+            <h1 style="font-size: 45px;color:rgb(214, 43, 21) !important;">Registration</h1>
         </div>
     </div>
 
@@ -35,27 +35,23 @@
 
 
     <div class="row-fluid">
-        <div class="span3 well custom-card">
-            <img src="resources/images/user.jpg" class="img-circle custom-image">
-
+        <div class="span3 custom-card loginmodal-container">
             <form action="${ config.issuer }${ config.issuer.endsWith('/') ? '' : '/' }j_spring_security_check?connectionType=SMS" method="POST">
                 <div>
                     <div class="input-prepend input-block-level custom-field">
-                        <span class="add-on"><i class="icon-user"></i></span>
                         <input type="text" placeholder="<spring:message code="login.phone"/>" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="<c:out value="${ login_hint }" />" id="j_phone_number" name="j_phone_number">
                     </div>
                 </div>
                 <div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <input type="submit" class="btn btn-block custom-button" value="Sign in" name="submit">
+                    <input type="submit" class="login loginmodal-submit" value="Sign in" name="submit">
                 </div>
-            </form>
+    <div class="row-fluid">
+        <div class="span10 custom-center text-center create-account">
+            <a href="/login_sms" style="font-size: 18px;color: black;">Log in</a>
         </div>
     </div>
-
-    <div class="row-fluid">
-        <div class="span2 custom-center text-center create-account">
-            <a href="/login_sms">Log in</a>
+            </form>
         </div>
     </div>
 </div>

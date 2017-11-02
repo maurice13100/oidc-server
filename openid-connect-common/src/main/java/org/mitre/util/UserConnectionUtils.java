@@ -1,5 +1,6 @@
 package org.mitre.util;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,4 +58,5 @@ public final class UserConnectionUtils {
 	// return clientService.loadClientByClientId(authClientId).getClientId();
 	//
 	// }
+	
 }

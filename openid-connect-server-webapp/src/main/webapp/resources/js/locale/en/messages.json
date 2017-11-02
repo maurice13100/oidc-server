@@ -10,8 +10,8 @@
             "tooltip": "Click to display full value."
         },
         "manage-blacklist": "Manage Blacklisted Clients",
-        "self-service-client": "Self-service Client Registration",
-        "self-service-resource": "Self-service Protected Resource Registration",
+        "self-service-client": "Self-service Client",
+        "self-service-resource": "Self-service Protected Resource",
         "user-profile": {
             "claim": "Claim name:",
             "show": "View User Profile",
@@ -181,7 +181,8 @@
             	"pairwise-sector": "Pairwise identifiers cannot be used with multiple redirect URIs unless a sector identifier URI is also registered.",
             	"jwk-set": "JWK set error",
             	"jwk-set-parse": "There was an error parsing the public key from the JSON Web Key set. Check the value and try again."
-            }
+            },
+            "view-connections" : "User connections"
         },
         "client-table": {
             "allow-introspection-tooltip": "This client can perform token introspection",
@@ -457,8 +458,8 @@
 		},
 		"developer": {
 			"title": "Developer",
-			"client_registration": "Self-service client registration",
-			"resource_registration": "Self-service protected resource registration"
+			"client_registration": "Registering/Editing a Client",
+			"resource_registration": "Registering/Editing a Protected Resource"
 		}
 	},
 	"manage": {
@@ -472,7 +473,7 @@
 		"error": {
 			"not_granted": "Access could not be granted."
 		},
-		"required_for": "Do you authorize {0} to access the information ?",
+		"required_for": "Do you authorize {0} to access your information ?",
 		"dynamically_registered": "This client was dynamically registered <span class=\"label label-info\" id=\"registrationTime\">{0}</span>.",
 		"caution": {
 			"title": "Caution",
@@ -516,13 +517,13 @@
 	},
 	"login": {
 		"login_with_username_and_password": "Sign in to your X-Connect account",
-		"login_with_phone": "Login with a one time password send on your phone",
+		"login_with_phone": "Mobile Login",
 		"login_with_otp": "Login with the code sent to your phone",
 		"username": "Enter your username",
 		"password": "Enter your password",
         "otptoken": "Enter the token",
-		"phone": "Enter your phone number",
-		"login-button": "Sign in",
+		"phone": "Enter mobile number",
+		"login-button": "Submit",
 		"error": "The system was unable to log you in. Please try again.",
         "submit": "Submit"
 	}

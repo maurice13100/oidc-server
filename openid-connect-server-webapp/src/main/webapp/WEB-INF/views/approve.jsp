@@ -25,7 +25,7 @@
 	<c:remove scope="session" var="SPRING_SECURITY_LAST_EXCEPTION" />
 
 	<div class="well" style="text-align: center">
-		<h1>
+		<h3>
 			<c:choose>
 				<c:when test="${empty client.clientName}">
 					<c:set var="argClient" value="${client.clientId}" />
@@ -35,7 +35,7 @@
 				</c:otherwise>
 			</c:choose>
 			<spring:message code="approve.required_for" arguments="<em>${argClient}</em>" />&nbsp;
-		</h1>
+		</h3>
 
 		<form name="confirmationForm"
 			action="${pageContext.request.contextPath.endsWith('/') ? pageContext.request.contextPath : pageContext.request.contextPath.concat('/') }authorize" method="post">
@@ -123,7 +123,7 @@
 				</div>
 			</div>
 			<div class="row" style="text-align: center">
-				<div class="span4" >
+				<div class="span4 offset1 well-small custom-center" style="text-align: center" >
 					<fieldset style="text-align: left" class="well">
 						<legend style="margin-bottom: 0;"><spring:message code="approve.access_to"/>:</legend>
 
@@ -142,7 +142,7 @@
 
 
 								<c:choose>
-									<c:when test="${ scope.value == 'email' || scope.value == 'phone' || scope.value == 'profile'}">
+									<c:when test="${ scope.value == 'phone' }">
 										<c:set value="" var="cssStyle"></c:set>
 									</c:when>
 									<c:otherwise>
@@ -197,8 +197,8 @@
 
 					</fieldset>
 
-					<fieldset style="text-align: left" class="well">
-						<legend style="margin-bottom: 0;"><spring:message code="approve.remember.title"/>:</legend>
+					<!-- <fieldset style="text-align: left" class="well">
+						<legend style="margin-bottom: 0;"><spring:message code="approve.remember.title"/>:</legend>-->
 						<label for="remember-forever" class="radio"> 
 						<input type="radio" name="remember" id="remember-forever" value="until-revoked"> 
 							<spring:message code="approve.remember.until_revoke"/>
@@ -211,12 +211,12 @@
 						<input type="radio" name="remember" id="remember-not" value="none" checked="checked">
 							<spring:message code="approve.remember.next_time"/>
 						</label>
-					</fieldset>
+					<!--</fieldset>-->
 				</div>
 			</div>
 
 			<div class="row">
-				<h3>
+				<!--<h3>
 						<spring:message code="approve.do_authorize"/> 
 						"<c:choose>
 							<c:when test="${empty client.clientName}">
@@ -226,7 +226,7 @@
 								<c:out value="${client.clientName}" />
 							</c:otherwise>
 						</c:choose>"?
-				</h3>
+				</h3>--><br/><br/>
                 <spring:message code="approve.label.authorize" var="authorize_label"/>
                 <spring:message code="approve.label.deny" var="deny_label"/>
 				<input id="user_oauth_approval" name="user_oauth_approval" value="true" type="hidden" />
