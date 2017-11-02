@@ -594,6 +594,7 @@ var AppRouter = Backbone.Router.extend({
         "admin/clients":"listClients",
         "admin/client/new":"newClient",
         "admin/client/:id":"editClient",
+        "admin/client/:id/connections":"viewConnections",
 
         "admin/whitelists":"whiteList",
         "admin/whitelist/new/:cid":"newWhitelist",
@@ -802,6 +803,39 @@ var AppRouter = Backbone.Router.extend({
 
     },
 
+    viewConnections:function(id) {
+
+        if (!isAdmin()) {
+            this.root();
+            return;
+        }
+
+        this.breadCrumbView.collection.reset();
+        this.breadCrumbView.collection.add([
+            {text:$.t('admin.home'), href:""},
+            {text:$.t('client.manage'), href:"manage/#admin/clients"},
+            {text:$.t('client.client-form.view-connections'), href:"manage/#admin/client/" + id + "/connections"}
+        ]);
+
+        this.updateSidebar('admin/clients');
+
+        var client = this.clientList.get(id);
+        if (!client) {
+            client = new ClientModel({id:id});
+        }
+
+        var userConnectionList = new UserConnectionCollection([], { id: id });
+        userConnectionList.fetch();
+        var view = new UserConnectionListView({model: userConnectionList});
+
+
+        //var view = new ClientFormView({model:client, systemScopeList: app.systemScopeList});
+        view.load(function() {
+            $('#content').html(view.render().el);
+            setPageTitle($.t('client.client-form.view-connections'));
+        });
+
+    },
     whiteList:function () {
 
     	if (!isAdmin()) {
@@ -1070,7 +1104,9 @@ var AppRouter = Backbone.Router.extend({
         
     	view.load(function() {
     			$('#content').html(view.render().el);
-    			
+                if (!isAdmin()) {
+                    $("#new-dyn-reg").css("display", "none");
+                }
     			setPageTitle($.t('admin.self-service-client'));
     	});
     	
@@ -1122,6 +1158,9 @@ var AppRouter = Backbone.Router.extend({
     		}
     		
     		$('#content').html(view.render().el);
+            if (!isAdmin()) {
+                $("#new-dyn-reg").css("display", "none");
+            }
     		view.delegateEvents();
     		setPageTitle($.t('dynreg.new-client'));
     		
@@ -1138,7 +1177,9 @@ var AppRouter = Backbone.Router.extend({
         ]);
     	
         this.updateSidebar('dev/dynreg');
-        
+        if (!isAdmin()) {
+                $("#new-dyn-reg").css("display", "none");
+        }
     	setPageTitle($.t('dynreg.edit-existing'));
     	// note that this doesn't actually load the client, that's supposed to happen elsewhere...
     },
@@ -1155,13 +1196,16 @@ var AppRouter = Backbone.Router.extend({
     	var view = new ResRegRootView({systemScopeList: this.systemScopeList});
     	view.load(function() {
     			$('#content').html(view.render().el);
-    			
+                if (!isAdmin()) {
+                    $("#new-rs-reg").css("display", "none");
+                }
     			setPageTitle($.t('admin.self-service-resource'));
     	});
     	
     },
     
     newResReg:function() {
+
     	this.breadCrumbView.collection.reset();
     	this.breadCrumbView.collection.add([
              {text:$.t('admin.home'), href:""},
@@ -1189,6 +1233,9 @@ var AppRouter = Backbone.Router.extend({
         	}, { silent: true });
     	
     		$('#content').html(view.render().el);
+            if (!isAdmin()) {
+                $("#new-rs-reg").css("display", "none");
+            }
     		view.delegateEvents();
     		setPageTitle($.t('rsreg.new'));
     		
@@ -1197,6 +1244,7 @@ var AppRouter = Backbone.Router.extend({
     },
     
     editResReg:function() {
+
     	this.breadCrumbView.collection.reset();
     	this.breadCrumbView.collection.add([
              {text:$.t('admin.home'), href:""},
@@ -1205,8 +1253,11 @@ var AppRouter = Backbone.Router.extend({
         ]);
     	
         this.updateSidebar('dev/resource');
-        
+        if (!isAdmin()) {
+            $("#new-rs-reg").css("display", "none");
+        }
     	setPageTitle($.t('rsreg.edit'));
+
     	// note that this doesn't actually load the client, that's supposed to happen elsewhere...
     },
     
@@ -1275,7 +1326,8 @@ $(function () {
     		$.get('resources/template/dynreg.html', _load),
     		$.get('resources/template/rsreg.html', _load),
     		$.get('resources/template/token.html', _load),
-    		$.get('resources/template/blacklist.html', _load)
+    		$.get('resources/template/blacklist.html', _load),
+            $.get('resources/template/connections.html', _load)
     		).done(function() {
     		    $.ajaxSetup({cache:false});
     		    app = new AppRouter();

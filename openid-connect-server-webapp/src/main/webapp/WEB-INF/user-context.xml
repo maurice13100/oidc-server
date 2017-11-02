@@ -91,7 +91,7 @@
 		<constructor-arg name="tokenstore" ref="localTokenstore" />
 		<constructor-arg name="endpoint" value="/validate" />
 		<constructor-arg name="successUrl" value="home" />
-		<constructor-arg name="failureUrl" value="login?error" />
+		<constructor-arg name="failureUrl" value="login_sms?error" />
 	</bean>
 
 	<bean id="jdbcUserDetailsService"

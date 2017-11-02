@@ -22,7 +22,7 @@
 
     <div class="row-fluid">
         <div class="span3 custom-center ">
-            <h1 class="banner"><a href="home">X-CONNECT</a></h1>
+            <h1 class="banner"><a href="home">XConnect</a></h1>
         </div>
     </div>
 

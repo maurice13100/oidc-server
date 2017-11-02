@@ -506,7 +506,7 @@
 		"login_with_username_and_password": "Login with Username and Password",
 		"username": "Username",
 		"password": "Password",
-		"login-button": "Login",
+		"login-button": "Enter",
 		"error": "The system was unable to log you in. Please try again."
 	}
 	

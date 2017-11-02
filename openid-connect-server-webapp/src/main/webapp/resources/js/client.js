@@ -322,7 +322,8 @@ var ClientView = Backbone.View.extend({
         "click .btn-whitelist":"whiteListClient",
 		'click .toggleMoreInformation': 'toggleMoreInformation',
         "click .clientid-substring":"showClientId",
-        "click .dynamically-registered": 'showRegistrationToken'
+        "click .dynamically-registered": 'showRegistrationToken',
+        "click .btn-view":"viewConnections",
     },
 
     editClient:function (e) {
@@ -330,15 +331,20 @@ var ClientView = Backbone.View.extend({
         app.navigate('admin/client/' + this.model.id, {trigger: true});
     },
 
-    whiteListClient:function(e) {
+    viewConnections:function(e) {
     	e.preventDefault();
-    	if (this.options.whiteList == null) {
-    		// create a new one
-    		app.navigate('admin/whitelist/new/' + this.model.get('id'), {trigger: true});
-    	} else {
-    		// edit the existing one
-    		app.navigate('admin/whitelist/' + this.options.whiteList.get('id'), {trigger: true});
-    	}
+    	app.navigate('admin/client/' + this.model.id + "/connections", {trigger: true});
+    },
+
+    whiteListClient:function(e) {
+        e.preventDefault();
+        if (this.options.whiteList == null) {
+            // create a new one
+            app.navigate('admin/whitelist/new/' + this.model.get('id'), {trigger: true});
+        } else {
+            // edit the existing one
+            app.navigate('admin/whitelist/' + this.options.whiteList.get('id'), {trigger: true});
+        }
     },
     
     deleteClient:function (e) {
