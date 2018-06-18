@@ -73,6 +73,9 @@ public class TokenAPI {
 	public String getAllAccessTokens(ModelMap m, Principal p) {
 
 		Set<OAuth2AccessTokenEntity> allTokens = tokenService.getAllAccessTokensForUser(p.getName());
+		for(OAuth2AccessTokenEntity token:allTokens){
+			logger.info("token" + token.getIdTokenString());
+		}
 		m.put(JsonEntityView.ENTITY, allTokens);
 		return TokenApiView.VIEWNAME;
 	}
@@ -81,6 +84,7 @@ public class TokenAPI {
 	public String getAccessTokenById(@PathVariable("id") Long id, ModelMap m, Principal p) {
 
 		OAuth2AccessTokenEntity token = tokenService.getAccessTokenById(id);
+		logger.info("token" + token.getIdTokenString());
 
 		if (token == null) {
 			logger.error("getToken failed; token not found: " + id);
@@ -128,6 +132,9 @@ public class TokenAPI {
 
 		if (client != null) {
 			List<OAuth2AccessTokenEntity> tokens = tokenService.getAccessTokensForClient(client);
+			for(OAuth2AccessTokenEntity token:tokens){
+			logger.info("token" + token.getIdTokenString());
+			}	
 			m.put(JsonEntityView.ENTITY, tokens);
 			return TokenApiView.VIEWNAME;
 		} else {
@@ -148,6 +155,7 @@ public class TokenAPI {
 		if (client != null) {
 			OAuth2AccessTokenEntity token = tokenService.getRegistrationAccessTokenForClient(client);
 			if (token != null) {
+				logger.info("token" + token.getIdTokenString());
 				m.put(JsonEntityView.ENTITY, token);
 				return TokenApiView.VIEWNAME;
 			} else {

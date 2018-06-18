@@ -239,5 +239,7 @@ public interface UserInfo extends Serializable {
 	 * @return
 	 */
 	public JsonObject getSource();
+	
+	public Object getClaim(String claimName, String languageTag);
 
 }

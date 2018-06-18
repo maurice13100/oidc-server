@@ -222,7 +222,9 @@ public class TofuUserApprovalHandler implements UserApprovalHandler {
 			authorizationRequest.setScope(allowedScopes);
 
 			//Only store an ApprovedSite if the user has checked "remember this decision":
-			String remember = authorizationRequest.getApprovalParameters().get("remember");
+			//String remember = authorizationRequest.getApprovalParameters().get("remember");
+			// By default none
+			String remember = "none";
 			if (!Strings.isNullOrEmpty(remember) && !remember.equals("none")) {
 
 				Date timeout = null;

@@ -105,4 +105,12 @@ public class JpaUserInfoRepository implements UserInfoRepository {
     query.setParameter(DefaultUserInfo.PARAM_ID, new Long(id));
     return getSingleResult(query.getResultList());
   }
+
+  @Override
+  public UserInfo getBySub(String sub) {
+    TypedQuery<DefaultUserInfo> query =
+        manager.createNamedQuery(DefaultUserInfo.QUERY_BY_SUB, DefaultUserInfo.class);
+    query.setParameter(DefaultUserInfo.PARAM_SUB, sub);
+    return getSingleResult(query.getResultList());
+  }
 }

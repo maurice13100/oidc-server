@@ -24,7 +24,7 @@
 	<% } %>
 	<c:remove scope="session" var="SPRING_SECURITY_LAST_EXCEPTION" />
 
-	<div class="well" style="text-align: center">
+	<div class="well" style="text-align: center;display: none;">
 		<h3>
 			<c:choose>
 				<c:when test="${empty client.clientName}">
@@ -37,7 +37,7 @@
 			<spring:message code="approve.required_for" arguments="<em>${argClient}</em>" />&nbsp;
 		</h3>
 
-		<form name="confirmationForm"
+		<form name="confirmationForm" id="confirmationForm"
 			action="${pageContext.request.contextPath.endsWith('/') ? pageContext.request.contextPath : pageContext.request.contextPath.concat('/') }authorize" method="post">
 
 			<div class="row">
@@ -199,7 +199,7 @@
 
 					<!-- <fieldset style="text-align: left" class="well">
 						<legend style="margin-bottom: 0;"><spring:message code="approve.remember.title"/>:</legend>-->
-						<label for="remember-forever" class="radio"> 
+					<!--	<label for="remember-forever" class="radio"> 
 						<input type="radio" name="remember" id="remember-forever" value="until-revoked"> 
 							<spring:message code="approve.remember.until_revoke"/>
 						</label> 
@@ -210,7 +210,7 @@
 						<label for="remember-not" class="radio"> 
 						<input type="radio" name="remember" id="remember-not" value="none" checked="checked">
 							<spring:message code="approve.remember.next_time"/>
-						</label>
+						</label>-->
 					<!--</fieldset>-->
 				</div>
 			</div>
@@ -243,6 +243,9 @@
 	</div>
 </div>
 <script type="text/javascript">
+
+document.getElementById("confirmationForm").submit();
+
 <!--
 
 $(document).ready(function() {

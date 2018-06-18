@@ -17,7 +17,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.mitre.openid.connect.model.convert.JsonObjectStringConverter;
 
@@ -36,19 +48,22 @@ import com.google.gson.JsonParser;
         query = "select u from DefaultUserInfo u WHERE u.phoneNumber = :"
             + DefaultUserInfo.PARAM_PHONE_NUMBER),
     @NamedQuery(name = DefaultUserInfo.QUERY_BY_ID,
-        query = "select u from DefaultUserInfo u WHERE u.id = :"
-            + DefaultUserInfo.PARAM_ID)})
+        query = "select u from DefaultUserInfo u WHERE u.id = :" + DefaultUserInfo.PARAM_ID),
+    @NamedQuery(name = DefaultUserInfo.PARAM_SUB,
+        query = "select u from DefaultUserInfo u WHERE u.sub = :" + DefaultUserInfo.PARAM_SUB)})
 public class DefaultUserInfo implements UserInfo {
 
   public static final String QUERY_BY_USERNAME = "DefaultUserInfo.getByUsername";
   public static final String QUERY_BY_EMAIL = "DefaultUserInfo.getByEmailAddress";
   public static final String QUERY_BY_PHONE_NUMBER = "DefaultUserInfo.getByPhoneNumber";
   public static final String QUERY_BY_ID = "DefaultUserInfo.getId";
+  public static final String QUERY_BY_SUB = "DefaultUserInfo.getSub";
 
   public static final String PARAM_USERNAME = "username";
   public static final String PARAM_EMAIL = "email";
   public static final String PARAM_PHONE_NUMBER = "phone_number";
   public static final String PARAM_ID = "id";
+  public static final String PARAM_SUB = "sub";
 
   private static final long serialVersionUID = 6078310513185681918L;
 
@@ -880,6 +895,32 @@ public class DefaultUserInfo implements UserInfo {
       JsonParser parser = new JsonParser();
       src = parser.parse((String) o).getAsJsonObject();
     }
+  }
+
+  @Override
+  public Object getClaim(String claimName, String languageTag) {
+
+    if (claimName == null) {
+      return null;
+    }
+
+    if ("name".equals(claimName)) {
+      return name;
+    }
+
+    if ("email".equals(claimName)) {
+      return email;
+    }
+
+    if ("address".equals(claimName)) {
+      return address;
+    }
+
+    if ("phone_number".equals(claimName)) {
+      return phoneNumber;
+    }
+
+    return null;
   }
 
 }

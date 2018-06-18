@@ -57,5 +57,7 @@ public interface UserInfoRepository {
 	public UserInfo updateUser(DefaultUserInfo userToUpdate);
 	
 	public UserInfo getById(String id);
+	
+	public UserInfo getBySub(String sub);
 
 }

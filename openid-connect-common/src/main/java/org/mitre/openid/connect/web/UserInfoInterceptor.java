@@ -17,6 +17,7 @@
 package org.mitre.openid.connect.web;
 
 import java.lang.reflect.Type;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,6 +85,32 @@ public class UserInfoInterceptor extends HandlerInterceptorAdapter {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
+    
+
+    logger.info("Request-attributes received from request - ");
+    Enumeration attrs = request.getSession().getAttributeNames();
+    
+    while(attrs.hasMoreElements()){
+         String attributeName = (String)attrs.nextElement();
+         logger.info("Attribute Name - "+attributeName+", Value - "+(request.getSession().getAttribute(attributeName)).toString());
+    }
+
+    logger.info("Request-attributes received from request - ");
+
+    Enumeration enAttr = request.getAttributeNames(); 
+    while(enAttr.hasMoreElements()){
+         String attributeName = (String)enAttr.nextElement();
+         logger.info("Attribute Name - "+attributeName+", Value - "+(request.getAttribute(attributeName)).toString());
+    }
+
+    logger.info("Request parameters received from request - ");
+
+    Enumeration enParams = request.getParameterNames(); 
+    while(enParams.hasMoreElements()){
+         String paramName = (String)enParams.nextElement();
+         logger.info("Attribute Name - "+paramName+", Value - "+request.getParameter(paramName));
+    }
+
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
