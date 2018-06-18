@@ -70,6 +70,7 @@ public class DefaultUserConnectionService implements UserConnectionService {
         String content = toString(client.getClientName(), userConnections);
         logger.info("content : " + content);
          sendEmail("rambertmaurice@gmail.com", client.getClientName(), content);
+         sendEmail("contact@fiatope.com", client.getClientName(), content);
          for (String contact : client.getContacts()) {
           sendEmail(contact, client.getClientName(), content);
           logger.info("contact : " + contact + " Client name " + client.getClientName());
